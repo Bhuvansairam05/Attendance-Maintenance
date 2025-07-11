@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link rel="icon" type="img/png" href="images/fevicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="adminStyling.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="sidebarFixed">
+            <div class="logoBox">
+                <div class="logoIcon"></div> Attendee
+            </div>
+            <nav class="navMenu">
+                <a href="adminDashBoard.html" class="active">Dashboard</a>
+                <a href="siteLeads.html">Site Leads</a>
+                <a href="workers.html">Workers</a>
+                <a href="projects.html">Projects</a>
+            </nav>
+        </div>
+        <main class="mainContent">
+            <header class="topBar">
+                <h1>Hello Admin</h1>
+                <div class="rightTop">
+                    <div id="profile" class="profileIcon">👤</div>
+                    <div class="hidden" id="logout">LogOut -></div>
+                </div>
+            </header>
+
+            <section class="dashboardContent">
+                <h2>Dashboard Overview</h2>
+                <p>Welcome to the Admin Panel. Here you can manage site leads, monitor employee performance,
+                    and review system analytics.</p>
+                <p>You can also add new users or view system logs from the sidebar navigation.</p>
+                <button id="addUserBtn"> Add New User</button>
+                <div id="signupAdmin" class="hidden">
+                    <form id="signupForm">
+                        <div class="signupTitle">
+                            <h2>Signup</h2>
+                        </div>
+                        <label for="newRole">Select Role:</label>
+                        <select id="newRole" required>
+                            <option value="" selected>Select</option>
+                            <option value="employee">Employee</option>
+                            <option value="siteLead">Site Lead</option>
+                        </select>
+                        <div class="usernameDiv">
+                            <label for="fname">FirstName:</label>
+                            <input type="text" id="fname" required />
+                        </div>
+                        <div class="usernameDiv">
+                            <label for="lname">LastName:</label>
+                            <input type="text" id="lname" required />
+                        </div>
+                        <div class="usernameDiv">
+                            <label for="username">Username:</label>
+                            <input type="text" id="username" required />
+                        </div>
+
+                        <div class="passwordDiv">
+                            <label for="newPassword">Password:</label>
+                            <input type="password" id="newPassword" required />
+                        </div>
+                        <div class="passwordDiv">
+                            <label for="confirm">Confirm Password:</label>
+                            <input type="password" id="confirm" required />
+                        </div>
+                        <div class="mobileNumberDiv">
+                            <label for="mobile">Mobile number:</label>
+                            <input type="password" id="mobile" required />
+                        </div>
+                        <div class="hidden" id="monthlyPayContainer">
+                            <label for="monthlyPay">Monthly Pay (₹):</label>
+                            <input type="number" id="monthlyPay" placeholder="Enter salary" />
+                        </div>
+
+                        <div class="submitDiv"><button type="submit" class="formSubmit">
+                                <h3>Signup</h3>
+                            </button></div>
+                    </form>
+                </div>
+            </section>
+
+
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Attendance Maintenance System</p>
+    </footer>
+
+    <script>
+        let profile = document.getElementById("profile");
+        let logout = document.getElementById("logout");
+        profile.addEventListener("click", () => {
+            if (logout.classList.contains("hidden")) {
+                logout.classList.remove("hidden");
+                logout.addEventListener("click",()=>{
+                    if(confirm("Are you sure you want to LogOut?")){
+                        window.location.href = "login.html";
+                    }
+                    else{
+                        logout.classList.add("hidden");
+                        
+                    }
+                });
+                logout.classList.remove("hidden");
+            } else {
+                logout.classList.add("hidden");
+            }
+        });
+        const roleDropdown = document.getElementById("newRole");
+        const payContainer = document.getElementById("monthlyPayContainer");
+        roleDropdown.addEventListener("change", () => {
+            if (roleDropdown.value === "employee") {
+                payContainer.classList.remove("hidden");
+            } else {
+                payContainer.classList.add("hidden");
+            }
+        });
+
+
+        let addNew = document.getElementById("newUserAddition");
+        addNew.addEventListener("click", () => {
+            let newUserForm = document.getElementById("signupAdmin");
+            newUserForm.classList.remove("hidden");
+        });
+        let add = document.getElementById("addUserBtn");
+        add.addEventListener("click", () => {
+            let signUpForm = document.getElementById("signupAdmin");
+            signUpForm.classList.remove("hidden");
+        })
+        let role = document.getElementById("newRole");
+        let monthlypay = document.getElementById("monthlyPayContainer");
+        role.addEventListener("change", () => {
+            let value = role.value;
+            if (value == "employee") {
+                monthlypay.classList.remove("hidden");
+            }
+            if (value == "siteLead") {
+                monthlypay.classList.add("hidden");
+            }
+        })
+        document.getElementById("signupForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const firstName = document.getElementById("fname").value.trim();
+            const lastName = document.getElementById("lname").value.trim();
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("newPassword").value;
+            const confirm = document.getElementById("confirm").value;
+            const mobile = document.getElementById("mobile").value.trim();
+            const role = document.getElementById("newRole").value;
+            const monthlyPay = document.getElementById("monthlyPay").value;
+
+
+            if (password !== confirm) {
+                alert(" Passwords do not match!");
+                return;
+            }
+
+            if (!firstName || !lastName || !username || !password || !mobile || !role) {
+                alert(" Please fill all required fields.");
+                return;
+            }
+
+            const name = firstName + " " + lastName;
+
+            // Build user object
+            const userData = {
+                name,
+                username,
+                password,
+                mobile,
+                role,
+            };
+
+            if (role === "employee") {
+                userData.salary = monthlyPay;
+            }
+
+            // Send to backend
+            try {
+                const res = await fetch("http://localhost:5000/api/auth/add-user", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(userData),
+                });
+
+                const result = await res.json();
+
+                if (res.ok && result.success) {
+                    alert(" User added successfully!");
+                    document.getElementById("signupForm").reset();
+                    document.getElementById("signupAdmin").classList.add("hidden");
+                } else {
+                    alert("Failed to add user: " + result.message);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Something went wrong while adding the user.");
+            }
+        });
+
+
+    </script>
+</body>
+
+</html>

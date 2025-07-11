@@ -1,0 +1,394 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    font-family: 'Times New Roman', Times, serif;
+    background: #f4f7fb;
+    color: #333;
+    font-size: large;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.sidebarFixed {
+    height: 100%;
+    width: 20%;
+    background-color: #0d1117;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.logoBox {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: rgb(0, 183, 255);
+}
+
+.logoIcon {
+    height: 20px;
+    width: 20px;
+    border: 2px solid rgb(0, 183, 255);
+    border-radius: 37%;
+    transform: rotate(45deg);
+}
+
+.navMenu a {
+    display: block;
+    color: #ccc;
+    padding: 0.8rem 0;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.navMenu a:hover,
+.navMenu a.active {
+    color: rgb(0, 183, 255);
+}
+
+.mainContent {
+    margin-left: 20%;
+    width: 80%;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.topBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profileIcon {
+    border-radius: 50%;
+    padding: 0.6rem;
+    font-size: 1.4rem;
+}
+.rightTop{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#logout{
+    padding:10px;
+    font-size:20px;
+    font-weight: bold;
+    color:white;
+    background-color: red;
+    border:2px solid transparent;
+    border-radius: 5px;
+}
+.dashboardContent {
+    margin-top: 2rem;
+    flex: 1;
+}
+
+.dashboardContent h2 {
+    font-size: 24px;
+    margin-bottom: 1rem;
+}
+
+.dashboardContent p {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+
+
+#signupAdmin {
+    height: auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#signupForm {
+    padding: 2%;
+    height: auto;
+    width: auto;
+    border: 2px solid black;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: white;
+    margin-bottom: 40px;
+}
+
+#signupForm input {
+    padding: 5px;
+    font-size: 17px;
+    height: 30px;
+    width: 100%;
+}
+
+.getInfo {
+    height: auto;
+    width: auto;
+    padding: 3px;
+    background-color: rgb(0, 183, 255);
+    color: white;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#newRole {
+    height: 25px;
+}
+
+.submitDiv {
+    display: flex;
+    justify-content: center;
+}
+
+.formSubmit {
+    font-family: 'Times New Roman', Times, serif;
+    height: 25px;
+    width: 100px;
+    color: white;
+    background-color: rgb(0, 183, 255);
+    border-radius: 5px;
+    border: 0px;
+    /* cursor: pointer; */
+
+}
+.removeWorker{
+    height: auto;
+    width: auto;
+    padding: 10px;
+    background-color: red;
+    color: white;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    cursor: pointer; 
+}
+.signupTitle {
+    display: flex;
+    justify-content: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#addUserBtn {
+    background-color: rgb(0, 183, 255);
+    color: white;
+    font-size: 1rem;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#addUserBtn:hover {
+    background-color: #009ddf;
+}
+
+footer {
+    color: rgb(0, 183, 255);
+    background-color: #0d1117;
+    text-align: center;
+    font-size: 18px;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 80%;
+}
+
+@media (max-width: 768px) {
+
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebarFixed {
+        position: relative;
+        width: 100%;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+    }
+
+    .navMenu {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+    }
+
+    .navMenu a {
+        padding: 0;
+    }
+
+    .mainContent {
+        margin-left: 0;
+        width: 100%;
+        padding: 1rem;
+        padding-bottom: 4rem;
+    }
+
+    .dashboardContent h2 {
+        font-size: 20px;
+    }
+
+    .dashboardContent p {
+        font-size: 14px;
+    }
+
+    footer {
+        width: 100%;
+        /* position: fixed;
+        bottom: 0;
+        left: 0; */
+    }
+    .projectDetailsMain{
+        flex-direction: column;
+    }
+}
+
+.dashboardTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-bottom: 40px;
+}
+
+.dashboardTable thead {
+    background-color: rgb(0, 183, 255);
+    color: white;
+}
+
+.dashboardTable th,
+.dashboardTable td {
+    padding: 12px 16px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.dashboardTable tbody tr:hover {
+    background-color: #f0f8ff;
+    /* cursor: pointer; */
+}
+
+.dashboardTable td {
+    font-size: 15px;
+    color: #333;
+}
+
+#addProjectBtn {
+    background-color: rgb(0, 183, 255);
+    color: white;
+    font-size: 1rem;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.workerDetailsMain {
+    width: 100%;
+    display: flex;
+}
+
+.workerDetailsMain .profile {
+    height: 100px;
+    width: 100px;
+}
+
+.addProjectForm {
+    padding: 2%;
+    height: auto;
+    width: auto;
+    border: 2px solid black;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: white;
+    margin-bottom: 40px;
+    font-size: 20px;
+}
+
+.addProjectForm input {
+    padding: 5px;
+    font-size: 17px;
+    height: 30px;
+    width: 100%;
+}
+
+.addFormDiv {
+    height: auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.addFormDiv div {
+    width: 60%;
+}
+
+.addFormDiv button {
+    width: 30%;
+    background-color: rgb(0, 183, 255);
+    color: white;
+    font-size: 1rem;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#siteLeadOption {
+    height: 25px;
+}
+
+select {
+    height: 30px;
+}
+
+.noStyle {
+    text-decoration: none;
+}
+
+.back {
+    margin: 15px;
+    color: black;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.chartBox {
+    padding: 20px;
+}
+
+canvas#attendanceChart {
+    width: 350px !important;
+    height: 350px !important;
+}
+.projectDetailsMain{
+    display: flex;
+}

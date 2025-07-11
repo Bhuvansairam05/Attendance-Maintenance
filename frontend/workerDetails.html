@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="adminStyling.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        
+    </style>
+    <title>Worker's Information</title>
+    <link rel="icon" type="img/png" href="images/fevicon.png">
+</head>
+
+<body>
+    <div class="container">
+        <div class="sidebarFixed">
+            <div class="logoBox">
+                <div class="logoIcon"></div> Attendee
+            </div>
+            <nav class="navMenu">
+                <a href="adminDashBoard.html">Dashboard</a>
+                <a href="siteLeads.html">Site Leads</a>
+                <a href="workers.html">Workers</a>
+                <a href="projects.html">Projects</a>
+            </nav>
+        </div>
+        <main class="mainContent">
+            <header class="topBar">
+                <a class="noStyle back" href="workers.html"><i class="fa-solid fa-arrow-left"></i></a>
+                <div class="profileIcon">👤</div>
+            </header>
+
+            <div class="workerDetailsMain">
+                <section class="dashboardContent">
+
+                    <div id="workerInfo"></div>
+                </section>
+                <section class="profile">
+                    <img src="images/Admin.png" alt="profile" height="80px" width="80px">
+                </section>
+            </div>
+            <div class="chartBox">
+                <br>
+                <canvas id="attendanceChart" width="10" height="10"></canvas>
+            </div>
+            <div id="removeWorker"></div>
+        </main>
+    </div>
+    <br><br><br><br>
+    <footer>
+        <p>&copy; 2025 Attendance Maintenance System</p>
+    </footer>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const workers = {
+        1: { name: "Ravi", project: "Metro Expansion", siteNo: "SL-102", siteLead: "Ram", pay: 5000 },
+        2: { name: "Prakash", project: "Metro Expansion", siteNo: "SL-102", siteLead: "Ram", pay: 5000 },
+        3: { name: "Akash", project: "Highway Work", siteNo: "SL-317", siteLead: "Sai", pay: 10000 }
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const workerId = urlParams.get('workerId');
+
+    const worker = workers[workerId];
+    const infoDiv = document.getElementById("workerInfo");
+    const removeWorker = document.getElementById("removeWorker");
+    if (worker) {
+        infoDiv.innerHTML = `
+        <h2>${worker.name} Details</h2>
+        <p><strong>Name:</strong> ${worker.name}</p>
+        <p><strong>Project:</strong> ${worker.project}</p>
+        <p><strong>Site No:</strong> ${worker.siteNo}</p>
+        <p><strong>Site Lead:</strong> ${worker.siteLead}</p>
+        <p><strong>Monthly Pay:</strong> ₹${worker.pay}</p>
+        <h3>Attendance Overview</h3>
+      `;
+      removeWorker.innerHTML=`<button class="removeWorker">Remove Worker</button>`;
+        const ctx = document.getElementById('attendanceChart').getContext('2d');
+        const attendanceChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Present Days', 'Absent Days'],
+                datasets: [{
+                    data: [22, 8], // Default values: 22 present, 8 absent (out of 30)
+                    backgroundColor: ['#4caf50', '#f44336'],
+                    borderColor: '#fff',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    } else {
+        infoDiv.innerHTML = `<p>Worker not found.</p>`;
+    }
+
+
+</script>
+
+</html>

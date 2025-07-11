@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects</title>
+    <link rel="icon" type="img/png" href="images/fevicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="adminStyling.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebarFixed">
+            <div class="logoBox">
+                <div class="logoIcon"></div> Attendee
+            </div>
+            <nav class="navMenu">
+                <a href="adminDashBoard.html">Dashboard</a>
+                <a href="siteLeads.html">Site Leads</a>
+                <a href="workers.html">Workers</a>
+                <a href="projects.html" class="active">Projects</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="mainContent">
+            <header class="topBar">
+                <h1></h1>
+                <div class="profileIcon">👤</div>
+            </header>
+
+            <section class="dashboardContent">
+                <h2>Projects</h2>
+                <button id="addProjectBtn"> Add New Project</button>
+                <div class="addFormDiv">
+                    <div id="addProjectForm" class="addProjectForm hidden">
+                        <label for="projectName">Project Name: </label>
+                        <input type="text" id="projectName">
+                        <label for="projectDescription">Project Descriptioin</label>
+                        <input type="text" id="projectDescription">
+                        <label for="startDate">Start Date: </label>
+                        <input type="date" id="startDate">
+                        <div id="sitesList"></div>
+                        <label for="addSite">Add Site</label>
+                        <button id="addSite">+</button>
+                       
+                        <form action="submit" id="addSiteForm" class="addProjectForm hidden">
+                            <label for="SiteName">SiteName:</label>
+                            <input type="text" id="SiteName">
+                            <label for="siteLeadOption">Select Site Lead</label>
+                            <select name="siteLead" id="siteLeadOption">
+                                
+                            </select>
+                            <label for="workerOption">Add Workers</label>
+                            <select name="workers" id="workerOption">
+                                <option value="" selected>select</option>
+                                <option value="raghu">Raghu</option>
+                            </select>
+                            <button id="add">Add Site</button>
+                        </form>
+                        <button>Add Project</button>
+                    </div>
+                </div>
+            </section><br><br>
+            <table class="dashboardTable">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Project Name</th>
+                        <th>No of Sites</th>
+                        <th>No of Workers</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Metro Expansion</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td><button class="getInfo">View Details</button></td>
+                    </tr>
+                    <!-- <tr>
+                        <td>2</td>
+                        <td>Bridge Renovation</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td><button>View Details</button></td>
+                    </tr> -->
+                    <tr>
+                        <td>2</td>
+                        <td>Highway Work</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td><button class="getInfo" onclick="window.location.href='projectDetails.html?projectId=3'">View Details</button></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Attendance Maintenance System</p>
+    </footer>
+
+    <script>
+        let project = document.getElementById("addProjectBtn")
+        let projectForm = document.getElementById("addProjectForm");
+        let site = document.getElementById("addSite");
+        let siteForm = document.getElementById("addSiteForm");
+        project.addEventListener("click",()=>{
+            projectForm.classList.remove("hidden");
+        });
+        site.addEventListener("click",()=>{
+            siteForm.classList.remove("hidden");
+        });
+    </script>
+</body>
+
+</html>

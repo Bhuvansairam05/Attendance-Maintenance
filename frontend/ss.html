@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .tableContainer {
+            padding: 20px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin: 20px;
+        }
+
+        .tableHeading {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .dashboardTable {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .dashboardTable thead {
+            background-color: rgb(0, 183, 255);
+            color: white;
+        }
+
+        .dashboardTable th,
+        .dashboardTable td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .dashboardTable tbody tr:hover {
+            background-color: #f0f8ff;
+            cursor: pointer;
+        }
+
+        .dashboardTable td {
+            font-size: 15px;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="tableContainer">
+        <h2 class="tableHeading">Site Leads Summary</h2>
+        <table class="dashboardTable">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Site Lead Name</th>
+                    <th>Working Project</th>
+                    <th>Site No</th>
+                    <th>Projects Done</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Ravi Kumar</td>
+                    <td>Metro Expansion</td>
+                    <td>SL-102</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Priya Sharma</td>
+                    <td>Bridge Renovation</td>
+                    <td>SL-204</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Ajay Verma</td>
+                    <td>Highway Work</td>
+                    <td>SL-317</td>
+                    <td>8</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+
+</html>
