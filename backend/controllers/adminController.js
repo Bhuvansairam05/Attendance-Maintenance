@@ -1,7 +1,8 @@
 const Admin = require("../models/Admin");
 const Employee = require("../models/Employee");
 const SiteLead = require("../models/SiteLead");
-
+const Project = require("../models/Project");
+const Site = require("../models/Site");
 exports.createAdmin = async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -69,3 +70,43 @@ exports.getAllSiteLeads = async(req,res)=>{
         res.status(500).json({error:"Error fetching site leads"});
     }
 }
+
+exports.createProject = async (req, res) => {
+  try {
+    const { projectName, projectDescription, startDate, sites } = req.body;
+    const createdSites = [];
+
+    for (const site of sites) {
+      const { siteName, siteLeadID, workerIDs } = site;
+
+      const newSite = new Site({
+        siteName,
+        siteLeadID,
+        workers: workerIDs
+      });
+
+      const savedSite = await newSite.save();
+      createdSites.push(savedSite._id);
+      await Employee.updateMany(
+        { _id: { $in: workerIDs } },
+        { $set: { inProject: true } }
+      );
+
+      await SiteLead.findByIdAndUpdate(siteLeadID, { inProject: true });
+    }
+    const newProject = new Project({
+      projectName,
+      projectDescription,
+      startDate,
+      sites: createdSites
+    });
+
+    await newProject.save();
+
+    res.status(201).json({ message: "Project created successfully", project: newProject });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error creating project" });
+  }
+};

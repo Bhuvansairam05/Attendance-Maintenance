@@ -7,4 +7,6 @@ router.get("/", adminController.getAdmins);
 router.post("/create-employee",adminController.createEmployee);
 router.get("/employees", adminController.getAllEmployees);
 router.post("/create-site-lead",adminController.createSiteLead);
+router.get("/site-leads",adminController.getAllSiteLeads);
+router.post("/create-project",adminController.createProject);
 module.exports = router;
