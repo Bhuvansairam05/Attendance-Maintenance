@@ -1,17 +1,21 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const cors = require("cors");
-const dotenv = require("dotenv");
-const authRoutes = require("./routes/auth");
-const projectRoutes = require("./routes/projects");
-const path = require("path");
-// const attendanceRoutes = require("./routes/attendance");
-dotenv.config();
+require("dotenv").config();
+
 const app = express();
-app.use(express.static(path.join(__dirname, "../frontend")));
 app.use(cors());
-app.use(express.json()); 
-app.use("/api/auth", authRoutes);
-app.use("/api/projects", projectRoutes);
-// app.use("/api/attendance", attendanceRoutes);
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.use(express.json());
+
+const adminRoutes = require("./routes/adminRoutes");
+// const employeeRoutes = require("./routes/employeeRoutes");
+
+app.use("/api/admins", adminRoutes);
+// app.use("/api/employees", employeeRoutes);
+
+mongoose.connect(process.env.mongoDB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log(" Connected to MongoDB");
+    app.listen(5000, () => console.log(" Server running on port 5000"));
+  })
+  .catch(err => console.error("MongoDB error:", err));

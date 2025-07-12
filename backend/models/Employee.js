@@ -13,6 +13,10 @@ const EmployeeSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    mobileNumber:{
+        type:String,
+        required:true
+    },
     monthlyPay:{
         type:Number,
         required:true
