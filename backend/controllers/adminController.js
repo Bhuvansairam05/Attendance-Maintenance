@@ -128,18 +128,17 @@ exports.getAllProjects = async (req, res) => {
 
 exports.getProjectDetails = async (req, res) => {
   try {
-    console.log("Req params: ", req?.params);
-    const projectId = req.params?.id;
 
-    console.log("Project id: ", projectId);
+    const  projectId  = req.params.id;
 
-    const project = await Project.findById(projectId).populate({
-      path: "sites",
-      populate: [
-        { path: "siteLeadID", model: "SiteLead" },
-        { path: "Employees", model: "Employee" },
-      ],
-    });
+    const project = await Project.findById(projectId)
+      .populate({
+        path: 'sites',
+        populate: [
+          { path: 'siteLeadID', model: 'SiteLead', select: 'name' },
+          { path: 'workers', model: 'Employee', select: 'name' }
+        ]
+      });
 
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
