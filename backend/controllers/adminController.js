@@ -110,3 +110,55 @@ exports.createProject = async (req, res) => {
     res.status(500).json({ error: "Error creating project" });
   }
 };
+
+exports.getAllProjects = async(req,res)=>{
+  try{
+    const projects = await Project.find().populate('sites');
+    const sites = await Site.find().populate('siteLeadID').populate('workers');
+    res.status(200).json({ projects, sites });
+  }
+  catch(error){
+    res.status(500).json({error:"Error fetching projects"});
+  }
+}
+
+exports.getProjectDetails = async (req, res) => {
+  try {
+    const { projectId } = req.params.id;
+
+    const project = await Project.findById(projectId)
+      .populate({
+        path: 'sites',
+        populate: [
+          { path: 'siteLeadID', model: 'SiteLead', select: 'name' },
+          { path: 'workers', model: 'Employee', select: 'name' }
+        ]
+      });
+
+    if (!project) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+
+    // Create a structured response similar to the image
+    const projectDetails = {
+      name: project.projectName,
+      description: project.projectDescription,
+      numberOfSites: project.sites.length,
+      sites: project.sites.map((site, index) => ({
+        siteNumber: index + 1,
+        siteName: site.siteName,
+        siteLeadName: site.siteLeadID?.name || 'N/A',
+        numberOfWorkers: site.workers.length,
+        workers: site.workers.map((worker, idx) => ({
+          workerNumber: idx + 1,
+          name: worker.name
+        }))
+      }))
+    };
+
+    res.status(200).json(projectDetails);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error fetching project details' });
+  }
+};
