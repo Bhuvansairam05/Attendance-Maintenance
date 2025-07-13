@@ -135,8 +135,8 @@ exports.getProjectDetails = async (req, res) => {
       .populate({
         path: 'sites',
         populate: [
-          { path: 'siteLeadID', model: 'SiteLead', select: 'name' },
-          { path: 'workers', model: 'Employee', select: 'name' }
+          { path: 'siteLeadID', model: 'SiteLead'},
+          { path: 'Employees', model: 'Employee'}
         ]
       });
 
