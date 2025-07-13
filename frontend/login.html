@@ -20,24 +20,26 @@
         <div class="login-body">
             <div class="loginForm">
                 <h1>Login</h1>
-                <form id="loginForm" action="javascript:void(0);">
+                <form id="loginForm" >
                     <div class="input-group">
                         <label for="username">Username:</label>
-                        <input type="text" id="username" name="username" required>
+                        <input type="text" id="username" name="username">
                     </div>
                     <div class="input-group">
                         <label for="Role">Select Role:</label>
-                        <select id="Role" name="Select Role" required>
+                        <select id="Role" name="Select Role">
+                            <option value="" selected>Select Role</option>
                             <option value="admin">Admin</option>
                             <option value="siteLead">Site Lead</option>
                             <option value="employee">Employee</option>
                         </select>
                     </div>
                     <div class="input-group">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password" required>
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password">
                     </div>
-                    <button type="submit" class="btn btn-primary">Login</button>
+                    <h2 id="warning" class="hidden"></h2>
+                    <button type="submit" id="login-button" class="login-button">Login</button>
                 </form>
             </div>
         </div>
