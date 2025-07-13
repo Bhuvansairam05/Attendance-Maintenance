@@ -124,7 +124,10 @@ exports.getAllProjects = async(req,res)=>{
 
 exports.getProjectDetails = async (req, res) => {
   try {
-    const { projectId } = req.params.id;
+    console.log("Req params: ",req?.params);
+    const projectId  = req.params?.id;
+
+    console.log("Project id: ",projectId);
 
     const project = await Project.findById(projectId)
       .populate({
