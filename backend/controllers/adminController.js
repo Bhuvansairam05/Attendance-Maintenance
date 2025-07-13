@@ -137,7 +137,7 @@ exports.getProjectDetails = async (req, res) => {
       path: "sites",
       populate: [
         { path: "siteLeadID", model: "SiteLead" },
-        { path: "Employees", model: "Employee" }, 
+        { path: "Employees", model: "Employee" },
       ],
     });
 
@@ -152,10 +152,9 @@ exports.getProjectDetails = async (req, res) => {
       numberOfSites: project.sites?.length,
       sites: project?.sites.map((site, index) => ({
         siteNumber: index + 1,
-        siteName: site?.siteName,
         siteLeadName: site?.siteLeadID?.name || "N/A",
-        numberOfWorkers: site?.workers?.length,
-        workers: site.workers?.map((worker, idx) => ({
+        numberOfWorkers: site?.Employees?.length,
+        workers: site.Employees?.map((worker, idx) => ({
           workerNumber: idx + 1,
           name: worker.name,
         })),
