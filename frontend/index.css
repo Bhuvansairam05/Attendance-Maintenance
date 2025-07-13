@@ -183,80 +183,23 @@ main {
     background-size: cover;
     border-radius: 15px;
 }
-
-hr {
-    width: 300px;
-    height: 3px;
-    background-color: black;
-}
-
-.mainLogin {
-    height: auto;
-    padding-bottom: 15px;
-    width: 95%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 22px;
-}
-
-.selectUserLogin {
+.loginBody{
+    margin:0px;
+    height: 100%;
     width: 100%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
-
-.userOption {
+.login-left{
+    height:450px;
+    width:50%;
+    background-image: url("images/login.jpg");
+    background-size: cover;
+}
+.login-right{
+    flex:1;
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
-
-.typeOfForm {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-#formDiv {
-    padding: 2%;
-    height: auto;
-    width: auto;
-    border: 2px solid black;
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    gap: 10px;
-
-}
-
-#siteLeadForm {
-    padding: 2%;
-    height: auto;
-    width: auto;
-    border: 2px solid black;
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-}
-
-#employeeForm {
-    padding: 2%;
-    height: auto;
-    width: auto;
-    border: 2px solid black;
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-}
-
 .signupTitle {
     display: flex;
     justify-content: center;
@@ -283,14 +226,6 @@ hr {
     width: 100%;
 }
 
-.loginForm {
-    padding-top: 5%;
-    padding-bottom: 5%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-}
 
 .hidden {
     display: none !important;

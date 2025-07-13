@@ -10,112 +10,41 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
-<body>
-    
-    <header>
-        <div class="title">
+<body class="loginBody">
+    <div class="login-left">
+    </div>
+    <div class="login-right">
+        <div class="login-header">
             <a class="noStyle back" href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
-            <div class="logo"></div>
-            <h1>Attendee</h1>
         </div>
-        <div class="rightHeader">
-            <a href="index.html" class="noStyle">
-                <div class="home">
-                    Home
-                </div>
-            </a>
-            <a href="about.html" class="noStyle">
-                <div class="about">
-                    About
-                </div>
-            </a>
-            <a class="noStyle" href="login.html">
-                <div class="login">
-                    <h3 align="center">Login</h3>
-                </div>
-            </a>
-        </div>
-    </header>
-
-    <main class="mainLogin">
-        <h2 align="center">Login</h2>
-        <hr>
-        <h2 align="center">Select UserType</h2>
-        <div class="selectUserLogin">
-            <div class="userOption" id="adminOption">
-                <img src="images/Admin.png" alt="Admin" height="250" width="250">
-                <h3>Admin</h3>
-            </div>
-            <div class="userOption" id="siteLeadOption">
-                <img src="images/siteLead.webp" alt="siteLead" height="200" width="200">
-                <h3>Site Lead</h3>
-            </div>
-            <div class="userOption" id="employeeOption">
-                <img src="images/Worker.webp" alt="Admin" height="200" width="200">
-                <h3>Worker</h3>
-            </div>
-        </div>
-        <div class="typeOfForm">
-            <div class="hidden" id="formDiv">
-                <h2 align="center">Admin Login</h2>
-                <form align="center" id="adminLoginForm" class="loginForm">
-                    <div class="usernameDiv">
-                        <label for="adminUsername">Username:</label>
-                        <input type="text" class="username" id="adminUsername">
+        <div class="login-body">
+            <div class="loginForm">
+                <h1>Login</h1>
+                <form id="loginForm" action="javascript:void(0);">
+                    <div class="input-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" required>
                     </div>
-                    <div class="passwordDiv">
-                        <label for="adminPassword">Password:</label>
-                        <input type="text" class="password" id="adminPassword">
+                    <div class="input-group">
+                        <label for="Role">Select Role:</label>
+                        <select id="Role" name="Select Role" required>
+                            <option value="admin">Admin</option>
+                            <option value="siteLead">Site Lead</option>
+                            <option value="employee">Employee</option>
+                        </select>
                     </div>
-                    <p id="adminWarning" class="warning largeFont"></p>
-                    <button id="adminSubmit" class="formSubmit">
-                        <h2>Login</h2>
-                    </button>
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
                 </form>
             </div>
-            <div class="hidden" id="siteLeadForm">
-                <h2 align="center">Site Lead Login</h2>
-                <form align="center" id="siteLeadLoginForm" class="loginForm">
-                    <div class="usernameDiv">
-                        <label for="siteLeadUsername">Username:</label>
-                        <input type="text" class="username" id="siteLeadUsername">
-                    </div>
-                    <div class="passwordDiv">
-                        <label for="siteLeadpassword">Password:</label>
-                        <input type="text" class="password" id="siteLeadPassword">
-                    </div>
-                    <p id="siteLeadWarning" class="warning largeFont"></p>
-                    <button id="siteLeadSubmit" class="formSubmit">
-                        <h2>Login</h2>
-                    </button>
-                </form>
-            </div>
-            <div class="hidden" id="employeeForm">
-                <h2 align="center">Worker Login</h2>
-                <form align="center" id="workerLoginForm" class="loginForm">
-                    <div class="usernameDiv">
-                        <label for="workerUsername">Username:</label>
-                        <input type="text" class="username" id="workerUsername">
-                    </div>
-                    <div class="passwordDiv">
-                        <label for="workerPassword">Password:</label>
-                        <input type="text" class="password" id="workerPassword">
-                    </div>
-                    <p id="workerWarning" class="warning largeFont"></p>
-                    <button id="workerSubmit" class="formSubmit">
-                        <h2>Login</h2>
-                    </button>
-                </form>
-            </div>
-            
         </div>
-
-
-    </main>
-    <br><br><br><br><br>
-    <footer>
-        <p>&copy; 2025 Attendance Maintenance System</p>
-    </footer>
+        <div class="login-footer">
+            <p>&copy; 2025 Attendance Maintenance System</p>
+        </div>
+    </div>
 </body>
 <script src="index.js">
 </script>
