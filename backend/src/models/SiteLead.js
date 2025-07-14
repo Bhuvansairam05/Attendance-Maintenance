@@ -20,6 +20,17 @@ const SiteLeadSchema = new mongoose.Schema({
     inProject:{
         type:Boolean,
         default:false
+    },
+    workingProject:{
+        type:String,
+        default:""
+    },
+    workingSite:{
+        type:String,
+        default:""
+    },
+    role:{
+        type:String
     }
 }, { timestamps: true });
 

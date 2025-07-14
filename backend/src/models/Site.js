@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
 
 const siteSchema = new mongoose.Schema({
-    siteNo:{
-        type:Number,
+    siteName:{
+        type:String,
+    },
+    projectName:{
+        type:String
     },
     siteLeadName:{
         type:String,

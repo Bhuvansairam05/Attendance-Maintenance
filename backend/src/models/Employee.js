@@ -28,6 +28,20 @@ const EmployeeSchema = new mongoose.Schema({
     workingDays:{
         type:Number,
         default:0
+    },
+    workingProject:{
+        type:String,
+        default:""
+    },
+    workingSite:{
+        type:String,
+        default:""
+    },totalWorkingDays:{
+        type:Number,
+        default:0
+    },
+    role:{
+        type:String
     }
 },{
     timestamps:true

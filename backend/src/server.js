@@ -9,11 +9,9 @@ app.use(express.json());
 
 const adminRoutes = require("./routes/adminRoutes");
 const authRoutes = require("./routes/auth");
-// const employeeRoutes = require("./routes/employeeRoutes");
 
 app.use("/api/admins", adminRoutes);
 app.use("/api/auth", authRoutes);
-// app.use("/api/employees", employeeRoutes);
 
 mongoose
   .connect(process.env.mongoDB_URI, {

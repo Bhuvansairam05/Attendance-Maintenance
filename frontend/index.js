@@ -21,16 +21,16 @@ login.addEventListener("submit",async function(e) {
         body:JSON.stringify({username,password,role}),
       });
       const data = await response.json();
-      console.log(data);
+      console.log(data?.user[0]?._id);
       if(response.ok){
-        if(role=="admin"){
-          window.location.href="adminDashBoard.html";
+        if(data?.user[0].role=="admin"){
+          window.location.href=`adminDashBoard.html?adminId=${data?.user[0]?._id}`;
         }
-        else if(role=="siteLead"){
-          window.location.href="siteLeadDashBoard.html";
+        else if(data?.user[0].role=="siteLead"){
+          window.location.href=`siteLeadDashBoard.html?siteLeadId=${data?.user[0]?._id}`;
         }
         else{
-          window.location.href="workerDashboard.html";
+          window.location.href=`workerDashboard.html?employeeId=${data?.user[0]?._id}`;
         }
       }
     }

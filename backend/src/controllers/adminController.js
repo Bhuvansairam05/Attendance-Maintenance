@@ -15,14 +15,7 @@ exports.createAdmin = async (req, res) => {
   }
 };
 
-exports.getAdmins = async (req, res) => {
-  try {
-    const admins = await Admin.find();
-    res.status(200).json(admins);
-  } catch (error) {
-    res.status(500).json({ error: "Error fetching admins" });
-  }
-};
+
 
 exports.createEmployee = async (req, res) => {
   try {
@@ -33,6 +26,7 @@ exports.createEmployee = async (req, res) => {
       name,
       mobileNumber,
       monthlyPay,
+      role:"employee"
     });
     await newEmployee.save();
     res.status(201).json({ message: "Employee created successfully" });
