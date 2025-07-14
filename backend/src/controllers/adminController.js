@@ -6,8 +6,8 @@ const Site = require("../models/Site");
 
 exports.createAdmin = async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const newAdmin = new Admin({ username, password });
+    const { username, password, role } = req.body;
+    const newAdmin = new Admin({ username, password, role });
     await newAdmin.save();
     res.status(201).json({ message: "Admin created successfully" });
   } catch (error) {
@@ -19,14 +19,14 @@ exports.createAdmin = async (req, res) => {
 
 exports.createEmployee = async (req, res) => {
   try {
-    const { username, password, name, mobileNumber, monthlyPay } = req.body;
+    const { username, password, name, mobileNumber, monthlyPay, role } = req.body;
     const newEmployee = new Employee({
       username,
       password,
       name,
       mobileNumber,
       monthlyPay,
-      role:"employee"
+      role
     });
     await newEmployee.save();
     res.status(201).json({ message: "Employee created successfully" });
@@ -46,12 +46,13 @@ exports.getAllEmployees = async (req, res) => {
 
 exports.createSiteLead = async (req, res) => {
   try {
-    const { name, username, mobileNumber, password } = req.body;
+    const { name, username, mobileNumber, password, role } = req.body;
     const newSiteLead = new SiteLead({
       name,
       username,
       mobileNumber,
       password,
+      role
     });
     await newSiteLead.save();
     res.status(201).json({ message: "Site Lead created successfully" });
@@ -76,21 +77,37 @@ exports.createProject = async (req, res) => {
 
     for (const site of sites) {
       const { siteName, siteLeadID, workerIDs } = site;
-
+      const siteLeadName = Site.findById(siteLeadID);
       const newSite = new Site({
         siteName,
         siteLeadID,
         workers: workerIDs,
+        projectName: projectName,
+        siteLeadName: siteLeadName
       });
 
       const savedSite = await newSite.save();
       createdSites.push(savedSite._id);
       await Employee.updateMany(
         { _id: { $in: workerIDs } },
-        { $set: { inProject: true } }
+        {
+          $set: {
+            inProject: true,
+            workingProject: projectName,
+            workingSite: siteName
+          }
+        }
       );
-
-      await SiteLead.findByIdAndUpdate(siteLeadID, { inProject: true });
+      await SiteLead.updateMany(
+        { _id: siteLeadID},
+        {
+          $set: {
+            inProject: true,
+            workingProject: projectName,
+            workingSite: siteName
+          }
+        }
+      );
     }
     const newProject = new Project({
       projectName,
@@ -123,14 +140,14 @@ exports.getAllProjects = async (req, res) => {
 exports.getProjectDetails = async (req, res) => {
   try {
 
-    const  projectId  = req.params.id;
+    const projectId = req.params.id;
 
     const project = await Project.findById(projectId)
       .populate({
         path: 'sites',
         populate: [
-          { path: 'siteLeadID', model: 'SiteLead'},
-          { path: 'Employees', model: 'Employee'}
+          { path: 'siteLeadID', model: 'SiteLead' },
+          { path: 'Employees', model: 'Employee' }
         ]
       });
 
