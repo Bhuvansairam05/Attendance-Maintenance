@@ -1,40 +1,41 @@
 let login = document.getElementById("loginForm");
-login.addEventListener("submit",async function(e) {
+login.addEventListener("submit", async function (e) {
   e.preventDefault();
   let username = document.getElementById("username").value;
   let role = document.getElementById("Role").value;
   let password = document.getElementById("password").value;
   let warning = document.getElementById("warning");
-  if(!username || !role || !password){
+  if (!username || !role || !password) {
     warning.classList.remove("hidden");
     warning.innerText = "Enter all the details to login";
     return;
   }
-  else{
+  else {
     warning.innerText = "";
-    try{
-      const response = await fetch("http://localhost:5000/api/auth/login",{
-        method:"POST",
-        headers:{
-          "content-Type":"application/json"
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "content-Type": "application/json"
         },
-        body:JSON.stringify({username,password,role}),
+        body: JSON.stringify({ username, password, role }),
       });
       const data = await response.json();
       console.log(data?.user[0]?._id);
-      if(response.ok){
-        if(data?.user[0].role=="admin"){
-          window.location.href=`adminDashBoard.html?adminId=${data?.user[0]?._id}`;
+      if (response.ok) {
+        if (data?.user[0].role == "admin") {
+          window.location.href = `adminDashBoard.html?adminId=${data?.user[0]?._id}`;
         }
-        else if(data?.user[0].role=="siteLead"){
-          window.location.href=`siteLeadDashBoard.html?siteLeadId=${data?.user[0]?._id}`;
+        else if (data?.user[0].role == "siteLead") {
+          window.location.href = `siteLeadDashBoard.html?siteLeadId=${data?.user[0]?._id}`;
         }
-        else{
-          window.location.href=`workerDashboard.html?employeeId=${data?.user[0]?._id}`;
+        else {
+          window.open(`workerDashboard.html?employeeId=${data?.user[0]?._id}`, "_blank");
+          // window.location.href=(`workerDashboard.html?employeeId=${data?.user[0]?._id}`);
         }
       }
     }
-    catch{
+    catch {
       alert("Cannot fetch data");
     }
   }
