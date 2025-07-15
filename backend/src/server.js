@@ -9,10 +9,10 @@ app.use(express.json());
 
 const adminRoutes = require("./routes/adminRoutes");
 const authRoutes = require("./routes/auth");
-
+const attendanceRoutes = require("./routes/attendanceRoutes");
 app.use("/api/admins", adminRoutes);
 app.use("/api/auth", authRoutes);
-
+app.use("/api/attendance",attendanceRoutes);
 mongoose
   .connect(process.env.mongoDB_URI, {
     useNewUrlParser: true,
