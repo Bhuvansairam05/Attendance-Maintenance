@@ -18,7 +18,7 @@ login.addEventListener("submit", async function (e) {
         headers: {
           "content-Type": "application/json"
         },
-        body: JSON.stringify({ username, password, role }),
+        body: JSON.stringify({ username, password, role })
       });
       const data = await response.json();
       console.log(data?.user[0]?._id);

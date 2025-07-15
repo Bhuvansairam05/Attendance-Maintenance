@@ -23,9 +23,10 @@
             </div>
         </div>
 
-
     </header>
-
+    <div class="worker-warning">
+        Warning message
+    </div>
     <main class="workerMain" id="employeeMain">
     </main>
     <footer>
@@ -120,6 +121,28 @@
             });
             let checkin = document.getElementById("checkIN");
             let checkout = document.getElementById("checkOUT");
+            let workerWarning = document.getElementsByClassName("worker-warning");
+            checkin.addEventListener("click", async function (e) {
+                e.preventDefault();
+                try{ 
+                const response = await fetch("http://localhost:5000/api/attendance/checkIn", {
+                    method: "POST",
+                    headers: {
+                        "content-Type": "application/json"
+                    },
+                    body: JSON.stringify({employeeId})
+                });
+                const data = await response.json();
+                if(response.ok){
+                    workerWarning.innerText = data.message;
+                }else{
+                    workerWarning.innerText = data.error;
+                }
+            }
+            catch(error){
+                workerWarning.innerText = "Failed to load Data";
+            }
+            });
         }
         catch (error) {
             let mainBody = document.getElementById("employeeMain");
