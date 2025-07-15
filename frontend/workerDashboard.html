@@ -10,16 +10,16 @@
     <link rel="stylesheet" href="index.css">
 </head>
 
-<body>
-    <header>
+<body class="worker-body">
+    <header class="worker-header">
         <div class="title">
             <div class="logo"></div>
             <h1>Attendee</h1>
         </div>
         <div class="worker-right-header">
             <img src="images/Admin.png" id="employeeProfile" alt="Employee" length="60" width="60">
-            <div class="logout hidden" id="employeeLogout">
-                LogOut
+            <div class="logout" id="employeeLogout">
+                Logout
             </div>
         </div>
 
@@ -38,7 +38,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const employeeId = urlParams.get('employeeId');
     console.log(employeeId);
-    
+
 
     window.addEventListener("DOMContentLoaded", async function () {
         try {
@@ -63,79 +63,67 @@
                 <button id="checkIN" class="checkInAttendance">CheckIn</button>
                 <button id="checkOUT" class="checkOutAttendance">CheckOut</button>
             </div>
-            <button id="getAttendance" class="getInfo">View Attendance</button>
-        </div>
+             
+         </div>
         
         <div id="chart" class="chartBox hidden">
             <br>
             <canvas id="attendanceChart" width="10" height="10"></canvas>
         </div><br><br><br><br><br>`;
-            
+
             let profile = document.getElementById("employeeProfile");
             let logout = document.getElementById("employeeLogout");
-            profile.addEventListener("click", () => {
-                if (logout.classList.contains("hidden")) {
-                    mainBody.classList.add("top-margin");
-                    logout.classList.remove("hidden");
-                    logout.addEventListener("click", () => {
-                        if (confirm("Are you sure you want to LogOut?")) {
-                            window.location.href = "login.html";
-                        }
-                        else {
-                            logout.classList.add("hidden");
 
-                        }
-                    });
-                    logout.classList.remove("hidden");
-                } else {
-                    mainBody.classList.remove("top-margin");
-                    logout.classList.add("hidden");
+            logout.addEventListener("click", () => {
+                if (confirm("Are you sure you want to LogOut?")) {
+                    window.location.href = "login.html";
                 }
             });
-            
+            logout.classList.remove("hidden");
+
+
+
             let d = new Date();
             let day = String(d.getDate()).padStart(2, "0");
             let month = String(d.getMonth() + 1).padStart(2, "0");
             let year = d.getFullYear();
             let date = document.getElementById("date");
             date.innerHTML = `Mark Attendance for ${day}/${month}/${year} :-`;
-            let attendance = document.getElementById("getAttendance");
-            attendance.addEventListener("click", () => {
-                let pieChartBox = document.getElementById("chart");
-                if (data.totalWorkingDays === 0) {
-                    pieChartBox.classList.remove("hidden");
-                    alert("Attendance is not Started");
-                    return;
-                }
-
+            let pieChartBox = document.getElementById("chart");
+            if (data.totalWorkingDays === 0) {
                 pieChartBox.classList.remove("hidden");
-                const ctx = document.getElementById('attendanceChart').getContext('2d');
-                const attendanceChart = new Chart(ctx, {
-                    type: 'pie',
-                    data: {
-                        labels: ['Present Days', 'Absent Days'],
-                        datasets: [{
-                            data: [data.workingDays, data.totalWorkingDays - data.workingDays],
-                            backgroundColor: ['#4caf50', '#f44336'],
-                            borderColor: '#fff',
-                            borderWidth: 2
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'bottom'
-                            }
+                pieChartBox.innerHTML = "<h1>Attendance</h1><br><p>CheckIN not done Yet<p/>";
+                return;
+            }
+
+            pieChartBox.classList.remove("hidden");
+            const ctx = document.getElementById('attendanceChart').getContext('2d');
+            const attendanceChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Present Days', 'Absent Days'],
+                    datasets: [{
+                        data: [data.workingDays, data.totalWorkingDays - data.workingDays],
+                        backgroundColor: ['#4caf50', '#f44336'],
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
                         }
                     }
-                });
+                }
+            });
 
-            })
-        
+
+
             let checkin = document.getElementById("checkIN");
             let checkout = document.getElementById("checkOUT");
-            
+
         }
         catch (error) {
             let mainBody = document.getElementById("employeeMain");
