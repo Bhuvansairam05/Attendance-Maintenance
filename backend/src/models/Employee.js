@@ -42,6 +42,9 @@ const EmployeeSchema = new mongoose.Schema({
     },
     role:{
         type:String
+    },siteLeadName:{
+        type:String,
+        default:""
     }
 },{
     timestamps:true

@@ -94,7 +94,8 @@ exports.createProject = async (req, res) => {
           $set: {
             inProject: true,
             workingProject: projectName,
-            workingSite: siteName
+            workingSite: siteName,
+            siteLeadName:siteLeadName
           }
         }
       );

@@ -15,9 +15,16 @@
             <div class="logo"></div>
             <h1>Attendee</h1>
         </div>
-        <div class="rightHeader siteLeadProfile">
+        <div class="worker-right-header" >
+            <img src="images/Admin.png" id="employeeProfile" alt="Employee" length="60" width="60">
+            <div class="logout hidden" id="employeeLogout">
+                LogOut
+            </div>
         </div>
+        
+
     </header>
+    
     <main class="workerMain" id="employeeMain">
     </main>
     <footer>
@@ -27,20 +34,27 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 
-
     const urlParams = new URLSearchParams(window.location.search);
     const employeeId = urlParams.get('employeeId');
     console.log(employeeId);
-    window.addEventListener("DOMContentLoaded",async function () {
+    window.addEventListener("DOMContentLoaded", async function () {
         try {
             const response = await fetch(`http://localhost:5000/api/auth/employee/${employeeId}`);
-            const data =await response.json();
+            const data = await response.json();
+            console.log(data);
             let mainBody = document.getElementById("employeeMain");
-            mainBody.innerHTML = `<div class="workerTop">
+            // location.replace(`workerDashboard.html?employeeId=${data._id}`);
+
+            if(!data.inProject){
+                mainBody.innerHTML = `<h2>Hello, ${data.name} Currently You are not assigned to any project.</h2>`;
+                return;
+            }
+
+            mainBody.innerHTML = `<div class="workerTop workerCard animate-slide-up scroll-animate">
             <h2>Hello, ${data.name}</h2>
-            <p class="largeFont">Working Project: Metro Expansion</p>
-            <p class="largeFont" class="largeFont">Site Name: SL-102</p>
-            <p class="largeFont">SiteLead Name: Ram</p>
+            <p class="largeFont">Working Project:${data.workingProject}</p>
+            <p class="largeFont" class="largeFont">Site Name: ${data.workingSite}</p>
+            <p class="largeFont">SiteLead Name: ${data.siteLeadName}</p>
             <h2 id="date"></h2>
             <div class="markAttendance">
                 <button class="checkInAttendance">CheckIn</button>
@@ -53,6 +67,25 @@
             <br>
             <canvas id="attendanceChart" width="10" height="10"></canvas>
         </div><br><br><br><br><br>`;
+        let profile = document.getElementById("employeeProfile");
+        let logout = document.getElementById("employeeLogout");
+        profile.addEventListener("click", () => {
+            if (logout.classList.contains("hidden")) {
+                logout.classList.remove("hidden");
+                logout.addEventListener("click",()=>{
+                    if(confirm("Are you sure you want to LogOut?")){
+                        window.location.href = "login.html";
+                    }
+                    else{
+                        logout.classList.add("hidden");
+                        
+                    }
+                });
+                logout.classList.remove("hidden");
+            } else {
+                logout.classList.add("hidden");
+            }
+        });
             let d = new Date();
             let day = String(d.getDate()).padStart(2, "0");
             let month = String(d.getMonth() + 1).padStart(2, "0");
@@ -62,6 +95,12 @@
             let attendance = document.getElementById("getAttendance");
             attendance.addEventListener("click", () => {
                 let pieChartBox = document.getElementById("chart");
+                if (data.totalWorkingDays === 0) {
+                    pieChartBox.classList.remove("hidden");
+                    alert("Attendance is not Started");
+                    return;
+                }
+
                 pieChartBox.classList.remove("hidden");
                 const ctx = document.getElementById('attendanceChart').getContext('2d');
                 const attendanceChart = new Chart(ctx, {
@@ -69,7 +108,7 @@
                     data: {
                         labels: ['Present Days', 'Absent Days'],
                         datasets: [{
-                            data: [data.workingDays, data.totalDays - data.workingDays],
+                            data: [data.workingDays, data.totalWorkingDays - data.workingDays],
                             backgroundColor: ['#4caf50', '#f44336'],
                             borderColor: '#fff',
                             borderWidth: 2
@@ -92,6 +131,7 @@
             mainBody.innerHTML = "<h1>Cannot load Data</h1>";
         }
     })
+    
 
 </script>
 
