@@ -36,7 +36,8 @@ exports.checkOut = async (req, res) => {
         }
         const date = new Date();
         const dateStr = date.toISOString().split('T')[0];
-        const existing = Attendance.findOne({employeeId,date:dateStr});
+        const existing =await Attendance.findOne({employeeId,date:dateStr});
+        console.log(existing);
         if(!existing){
             return res.status(400).json({error:"First CheckIn before Checkout"});
         }
@@ -45,7 +46,7 @@ exports.checkOut = async (req, res) => {
         }
         existing.checkOutTime = date;
         await existing.save();
-        res.status(200).json({message:"Checked out successfully",data:existing});
+        return res.status(200).json({message:"Checked out successfully"});
     }
     catch(error){
        return res.status(500).json({error:"Cannot fetch data"});

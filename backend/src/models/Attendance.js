@@ -1,16 +1,15 @@
 const mongoose = require('mongoose');
 
 const AttendanceSchema = new mongoose.Schema({
-    workerId:{
+    employeeId:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Worker',
+        ref:'Employee',
     },
     date: {
         type: String
     },
     checkInTime:{
-        type:Date,
-        
+        type:Date,    
     },
     checkOutTime:{
         type:Date,
