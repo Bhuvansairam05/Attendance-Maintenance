@@ -46,7 +46,7 @@ exports.checkOut = async (req, res) => {
         }
         existing.checkOutTime = date;
         await existing.save();
-        return res.status(200).json({message:"Checked out successfully"});
+        return res.status(200).json({message:"Check-out recorded successfully"});
     }
     catch(error){
        return res.status(500).json({error:"Cannot fetch data"});
