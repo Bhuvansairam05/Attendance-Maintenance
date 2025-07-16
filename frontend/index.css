@@ -723,16 +723,21 @@ main {
     align-items: flex-start;
     gap: 15px;
 }
-
+.siteLeadHeader{
+    display: flex;
+    align-items: center;
+}
 .siteLeadProfile {
+    width: 20%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
     margin-right: 30px;
-    height: 50px;
-    width: 50px;
+    height: 55px;
+    width: 55px;
     font-size: 30px;
-    border: 1px solid black;
+    border: 1px solid transparent;
     border-radius: 50%;
-    background-image: url("images/Admin.png");
-    background-size: cover;
 }
 
 .markAttendance {
@@ -804,6 +809,9 @@ body {
     color: white;
     border:2px solid transparent;
     border-radius: 10px;
+}
+#siteLead-body{
+    height: auto;
 }
 footer {
     width: 100%;

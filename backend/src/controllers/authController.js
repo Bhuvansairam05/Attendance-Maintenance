@@ -1,7 +1,7 @@
 const Admin = require("../models/Admin");
 const SiteLead = require("../models/SiteLead");
 const Employee = require("../models/Employee");
-
+const Site = require("../models/Site");
 const loginUser = (req, res) => {
   const { username, password ,role} = req.body;
   if(!username || !password || !role) {
@@ -42,7 +42,7 @@ const loginUser = (req, res) => {
 
 const getAdmin = async(req,res)=>{
   try {
-      const adminId = req.params.userID;
+      const adminId = req.params.adminId;
       const admin = await Admin.findById(adminId);
       res.status(200).json(admin);
     } catch (error) {
@@ -52,11 +52,17 @@ const getAdmin = async(req,res)=>{
 
 const getSiteLead = async(req,res)=>{
   try{
-    const siteLead = await SiteLead.findById(req.params.userID);
+    if(!req.params.siteLeadId){
+      res.status(404).json({error:"siteLeadId required"});
+    }
+    const siteLead = await Site.findOne({"siteLeadID":req.params.siteLeadId});
+    if(!siteLead){
+      res.status(404).json({error:"Wrong siteLead Id"});
+    }
     res.status(200).json(siteLead);
   }
   catch(error){
-    res.status(500).json({error:"error occured while fetching data"});
+    res.status(500).json({error:`error occured while fetching data`});
   }
 }
 

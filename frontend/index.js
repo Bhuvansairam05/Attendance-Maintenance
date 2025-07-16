@@ -24,14 +24,13 @@ login.addEventListener("submit", async function (e) {
       console.log(data?.user[0]?._id);
       if (response.ok) {
         if (data?.user[0].role == "admin") {
-          window.location.href = `adminDashBoard.html?adminId=${data?.user[0]?._id}`;
+          window.open(`adminDashboard.html?adminId=${data?.user[0]?._id}`,"_blank");
         }
         else if (data?.user[0].role == "siteLead") {
-          window.location.href = `siteLeadDashBoard.html?siteLeadId=${data?.user[0]?._id}`;
+          window.open(`siteLeadDashBoard.html?siteLeadId=${data?.user[0]?._id}`, "_blank");
         }
         else {
           window.open(`workerDashboard.html?employeeId=${data?.user[0]?._id}`, "_blank");
-          // window.location.href=(`workerDashboard.html?employeeId=${data?.user[0]?._id}`);
         }
       }
     }

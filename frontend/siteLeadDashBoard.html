@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,71 +8,88 @@
     <link rel="icon" type="img/png" href="images/fevicon.png">
     <link rel="stylesheet" href="index.css">
 </head>
-<body>
-    <header>
-        <div class="title">
-            <div class="logo"></div>
-            <h1>Attendee</h1>
-        </div>
-        <div class="rightHeader siteLeadProfile">
-            <!-- 👤 -->
-        </div>
-    </header>
-    <main class="siteLeadMain">
-        <div class="top">
-            <h2>Hello, Ram</h2>
-            <p class="largeFont">Working Project: Metro Expansion</p>
-            <p class="largeFont"class="largeFont">Site Name: SL-102</p>
-            <p class="largeFont">No of workers: 2</p>
-            <p class="largeFont">5 projects working experience</p>
-            <h2 id="date"></h2>
-        </div>
-        <div class="bottom">
-            <table class="dashboardTable">
-                    <thead>
-                        <tr>
-                            <th>S.No</th>
-                            <th>Worker Name</th>
-                            <th>CheckIn Time</th>
-                            <th>CheckOut Time</th>
-                            <th>Accept</th>
-                            <th>Reject</th>
-                            <th>Get Info</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Ravi</td>
-                            <td>09:30 AM</td>
-                            <td>03:30 PM</td>
-                            <td><button class="approveAttendance">Approve</button></td>
-                            <td><button class="rejectAttendance">Reject</button></td>
-                            <td><button class="getInfo" onclick="window.location.href='workerData.html?workerId=1'">Get Info</button></td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Prakash</td>
-                            <td>10:00 AM</td>
-                            <td>04:00 PM</td>
-                            <td><button class="approveAttendance">Approve</button></td>
-                            <td><button class="rejectAttendance">Reject</button></td>
-                            <td><button class="getInfo" onclick="window.location.href='workerData.html?workerId=2'">Get Info</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-        </div>
-    </main>
-    <footer>
-        <p>&copy; 2025 Attendance Maintenance System</p>
-    </footer>
+
+<body id="siteLead-body">
+    <h1 align="center">Please wait! Site is loading...</h1>
 </body>
 <script>
-    let d = new Date();
-    let day = String(d.getDate()).padStart(2,"0");
-    let month = String( d.getMonth()+1).padStart(2,"0");
-    let year = d.getFullYear();
-    let date = document.getElementById("date");
-    date.innerHTML=`Approve Attendance for ${day}/${month}/${year} :-`;
+    const params = new URLSearchParams(window.location.search);
+    const siteLeadId = params.get("siteLeadId");
+    let siteLeadBody = document.getElementById("siteLead-body");
+    let siteLeadMain = document.getElementById("siteLead-main");
+
+    window.addEventListener("DOMContentLoaded", async function (e) {
+        e.preventDefault();
+        try {
+            const response = await fetch(`http://localhost:5000/api/auth/siteLead/${siteLeadId}`);
+            console.log("response", response);
+
+            if (!response.ok) {
+                    console.log("in server error");
+                    siteLeadBody.innerHTML = "<h1>404 Site Lead Not found</h1>";
+                    siteLeadBody.style.textAlign = "center";
+                    return;
+            }
+            const result = await response.json();
+            if (response.ok) {
+                siteLeadBody.innerHTML = `
+                <header class="siteLeadHeader">
+                    <div class="title">
+                        <div class="logo"></div>
+                        <h1>Attendee</h1>
+                    </div>
+                    <div class="siteLeadProfile">
+                        <img src="images/Admin.png" alt="profile" height="80" width="80">
+                    </div>
+                </header>
+                <main id="siteLead-main" class="siteLeadMain">
+                    <div class="top">
+                        <h2>Hello, ${result.siteLeadName}</h2>
+                        <p class="largeFont">Working Project: ${result.projectName}</p>
+                        <p class="largeFont"class="largeFont">Site Name: ${result.siteName}</p>
+                        <p class="largeFont">No of workers: ${result.Employees.length}</p>
+                        <h2 id="date"></h2>
+                    </div>
+                    <div class="bottom">
+                        <table class="dashboardTable">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Worker Name</th>
+                                        <th>CheckIn Time</th>
+                                        <th>CheckOut Time</th>
+                                        <th>Accept</th>
+                                        <th>Reject</th>
+                                        <th>Get Info</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="employees-table-body">
+                                    
+                                </tbody>
+                            </table>
+                    </div>
+                </main>
+                <footer>
+                    <p>&copy; 2025 Attendance Maintenance System</p>
+                 </footer>
+            `;
+                let tableBody = document.getElementById("employees-table-body");
+                tableBody.innerHTML='<tr>hello</tr>';
+                let d = new Date();
+                let day = String(d.getDate()).padStart(2, "0");
+                let month = String(d.getMonth() + 1).padStart(2, "0");
+                let year = d.getFullYear();
+                let date = document.getElementById("date");
+                date.innerHTML = `Approve Attendance for ${day}/${month}/${year} :-`;
+            }
+        }
+        catch (error) {
+            siteLeadBody.innerHTML = "<h1>500 Server not found!</h1>";
+            siteLeadBody.style.textAlign = "center";
+        }
+    })
+
+
 </script>
+
 </html>

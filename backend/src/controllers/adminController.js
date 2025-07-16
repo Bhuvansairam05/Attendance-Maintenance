@@ -15,8 +15,6 @@ exports.createAdmin = async (req, res) => {
   }
 };
 
-
-
 exports.createEmployee = async (req, res) => {
   try {
     const { username, password, name, mobileNumber, monthlyPay, role } = req.body;
@@ -77,13 +75,14 @@ exports.createProject = async (req, res) => {
 
     for (const site of sites) {
       const { siteName, siteLeadID, workerIDs } = site;
-      const siteLeadName = Site.findById(siteLeadID);
+      const siteLeadName = SiteLead.findById(siteLeadID);
+      const siteleadname = siteLeadName.name;
       const newSite = new Site({
         siteName,
         siteLeadID,
         workers: workerIDs,
         projectName: projectName,
-        siteLeadName: siteLeadName
+        siteLeadName: siteleadname
       });
 
       const savedSite = await newSite.save();

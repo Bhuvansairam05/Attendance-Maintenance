@@ -10,9 +10,11 @@ app.use(express.json());
 const adminRoutes = require("./routes/adminRoutes");
 const authRoutes = require("./routes/auth");
 const attendanceRoutes = require("./routes/attendanceRoutes");
+const SiteLeadRoutes = require("./routes/siteLeadRoutes");
 app.use("/api/admins", adminRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/attendance",attendanceRoutes);
+app.use("/api/siteLead",SiteLeadRoutes)
 mongoose
   .connect(process.env.mongoDB_URI, {
     useNewUrlParser: true,
