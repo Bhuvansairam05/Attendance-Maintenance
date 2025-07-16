@@ -74,7 +74,25 @@
                  </footer>
             `;
                 let tableBody = document.getElementById("employees-table-body");
-                tableBody.innerHTML='<tr>hello</tr>';
+                tableBody.innerHTML="";
+                const Employees = result.Employees;
+                let index=1;
+                for(let emploee in Employees){
+                    let employeeDetails = await fetch(`http://localhost:5000/api/auth/employee/${emploee}`);
+                    let details = await employeeDetails.json();
+                    let attendanceDetails = await fetch(`http://localhost:5000/api`)
+                    tableBody.innerHTML+=`
+                        <tr>
+                            <td>${index++}</td>
+                            <td>${details.name}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    `;
+                }
                 let d = new Date();
                 let day = String(d.getDate()).padStart(2, "0");
                 let month = String(d.getMonth() + 1).padStart(2, "0");
