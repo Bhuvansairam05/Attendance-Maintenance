@@ -726,20 +726,17 @@ main {
     gap: 15px;
 }
 .siteLeadHeader{
+    height: 70px;
     display: flex;
     align-items: center;
 }
-.siteLeadProfile {
-    width: 20%;
+.siteLeadProfile{
+    height: auto;
+    width: 15%;
     display: flex;
-    justify-content: flex-start;
+    gap:15px;
     align-items: center;
-    margin-right: 30px;
-    height: 55px;
-    width: 55px;
-    font-size: 30px;
-    border: 1px solid transparent;
-    border-radius: 50%;
+    justify-content: flex-start;
 }
 
 .markAttendance {
@@ -803,8 +800,35 @@ body {
   align-items: center;
   /* display: none; */
 }
+#siteLead-warning{
+    position: fixed;
+  top: 50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border: 2px solid #ccc;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  padding: 30px 20px;
+  z-index: 1000;
+  text-align: center;
+  border-radius: 12px;
+  font-size: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap:20px;
+  align-items: center;
+}
 #warning-ok{
     font-size: 20px;
+    width:80px;
+    padding:10px;
+    background-color:rgb(0, 183, 255);
+    color: white;
+    border:2px solid transparent;
+    border-radius: 10px;
+}
+#siteLead-warning-ok{
+font-size: 20px;
     width:80px;
     padding:10px;
     background-color:rgb(0, 183, 255);

@@ -4,89 +4,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Worker Data</title>
+    <meta http-equiv="Cache-Control" content="no-store" />
+    <title>WorkerData</title>
     <link rel="icon" type="img/png" href="images/fevicon.png">
     <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
-<body>
-    <header>
+<body id="employee-body" class="worker-body">
+    <h1 id="employee-load" align="center">Please wait details are loading...</h1>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+   const params = new URLSearchParams(window.location.search);
+const employeeId = params.get("employeeId");
+
+    console.log(employeeId);
+
+
+    window.addEventListener("DOMContentLoaded", async function () {
+        try {
+            const response = await fetch(`http://localhost:5000/api/auth/employee/${employeeId}`);
+            const data = await response.json();
+            console.log(data);
+            let mainBody = document.getElementById("employee-body");
+
+
+            if (!data.inProject) {
+                mainBody.innerHTML = `<p class="largeFont">Name: ${data.name} Currently You are not assigned to any project.</p>`;
+                return;
+            }
+            mainBody.innerHTML = `
+            <header class="worker-header">
         <div class="title">
-            <a class="noStyle back" href="siteLeadDashBoard.html"><i class="fa-solid fa-arrow-left"></i></a>
             <div class="logo"></div>
             <h1>Attendee</h1>
         </div>
+        <div class="worker-right-header">
+            <img src="images/Admin.png" id="employeeProfile" alt="Employee" length="60" width="60">
+            <div class="logout" id="employeeLogout">
+                Logout
+            </div>
+        </div>
+
     </header>
-    <main class="workerDataMain">
-        <div class="workerDetailsMain">
-            <section class="dashboardContent">
-                <div id="workerInfo"></div>
-            </section>
-        </div>
+    <div id="warningBox" class="hidden">
+        <h3 id="worker-warning"></h3>
+        <button id="warning-ok">Ok</button>
+    </div>
+    <main class="workerMain" id="employeeMain">
+            <div class="workerTop workerCard animate-slide-up scroll-animate">
+            <p class="largeFont">Name: ${data.name}</p>
+            <p class="largeFont">Working Project:${data.workingProject}</p>
+            <p class="largeFont" class="largeFont">Site Name: ${data.workingSite}</p>
+            <p class="largeFont">Present Days: ${data.workingDays}</p>
+            <p class="largeFont">Salary: ${data.monthlyPay}</p>
+         </div>
         
-        <div class="chartBox">
-            <h2>Attendance Overview</h2>
+        <div id="chart" class="chartBox hidden">
+            <br>
             <canvas id="attendanceChart" width="10" height="10"></canvas>
-        </div>
-    </main>
-    <br><br><br><br>
+        </div><br><br><br><br><br>
+         </main>
     <footer>
         <p>&copy; 2025 Attendance Maintenance System</p>
     </footer>
-</body>
+        `;
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    const workers = {
-        1: { name: "Ravi", project: "Metro Expansion", siteNo: "SL-102", siteLead: "Ram", pay: 5000 },
-        2: { name: "Prakash", project: "Metro Expansion", siteNo: "SL-102", siteLead: "Ram", pay: 5000 },
-        3: { name: "Akash", project: "Highway Work", siteNo: "SL-317", siteLead: "Sai", pay: 10000 }
-    };
+            let profile = document.getElementById("employeeProfile");
+            let logout = document.getElementById("employeeLogout");
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const workerId = urlParams.get('workerId');
-
-    const worker = workers[workerId];
-    const infoDiv = document.getElementById("workerInfo");
-    if (worker) {
-        infoDiv.innerHTML = `
-        <h2>${worker.name} Details</h2>
-        <img src="images/Admin.png" alt="profile" height="100px" width="100px">
-        <p class="largeFont"><strong>Name:</strong> ${worker.name} </p>
-        <p class="largeFont"><strong>Project:</strong> ${worker.project}</p>
-        <p class="largeFont"><strong>Site No:</strong> ${worker.siteNo}</p>
-        <p class="largeFont"><strong>Site Lead:</strong> ${worker.siteLead}</p>
-        <p class="largeFont"><strong>Monthly Pay:</strong> ₹${worker.pay}</p>
-        
-      `;
-        const ctx = document.getElementById('attendanceChart').getContext('2d');
-        const attendanceChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['Present Days', 'Absent Days'],
-                datasets: [{
-                    data: [22, 8], // Default values: 22 present, 8 absent (out of 30)
-                    backgroundColor: ['#4caf50', '#f44336'],
-                    borderColor: '#fff',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
+            logout.addEventListener("click", () => {
+                if (confirm("Are you sure you want to LogOut?")) {
+                    window.location.href = "login.html";
+                }
+            });
+            let d = new Date();
+            let day = String(d.getDate()).padStart(2, "0");
+            let month = String(d.getMonth() + 1).padStart(2, "0");
+            let year = d.getFullYear();
+            let pieChartBox = document.getElementById("chart");
+            if (data.totalWorkingDays === 0) {
+                pieChartBox.classList.remove("hidden");
+                pieChartBox.innerHTML = "<h1>Attendance</h1><br><p>CheckIN not done Yet<p/>";
+                // return;
+            }
+            else{ 
+            pieChartBox.classList.remove("hidden");
+            const ctx = document.getElementById('attendanceChart').getContext('2d');
+            const attendanceChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Present Days', 'Absent Days'],
+                    datasets: [{
+                        data: [data.workingDays, data.totalWorkingDays - data.workingDays],
+                        backgroundColor: ['#4caf50', '#f44336'],
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
                     }
                 }
+            });
             }
+
+
+        }
+        catch (error) {
+            let mainBody = document.getElementById("employee-load");
+            mainBody.innerHTML = "<h1>500 Server not found</h1>";
+        }
         });
-    } else {
-        infoDiv.innerHTML = `<p>Worker not found.</p>`;
-    }
-
-
 </script>
-
 
 </html>

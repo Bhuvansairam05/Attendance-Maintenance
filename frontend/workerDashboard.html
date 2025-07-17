@@ -10,8 +10,33 @@
     <link rel="stylesheet" href="index.css">
 </head>
 
-<body class="worker-body">
-    <header class="worker-header">
+<body id="employeeDashboard" class="worker-body">
+    
+    <h1 id="employee-load" align="center">Please wait! Data is loading...</h1>
+   
+</body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const employeeId = urlParams.get('employeeId');
+    console.log(employeeId);
+
+
+    window.addEventListener("DOMContentLoaded", async function () {
+        try {
+            const response = await fetch(`http://localhost:5000/api/auth/employee/${employeeId}`);
+            const data = await response.json();
+            console.log(data);
+            let mainBody = document.getElementById("employeeDashboard");
+
+
+            if (!data.inProject) {
+                mainBody.innerHTML = `<h2>Hello, ${data.name} Currently You are not assigned to any project.</h2>`;
+                return;
+            }
+            mainBody.innerHTML = `
+            <header class="worker-header">
         <div class="title">
             <div class="logo"></div>
             <h1>Attendee</h1>
@@ -29,32 +54,7 @@
         <button id="warning-ok">Ok</button>
     </div>
     <main class="workerMain" id="employeeMain">
-    </main>
-    <footer>
-        <p>&copy; 2025 Attendance Maintenance System</p>
-    </footer>
-</body>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const employeeId = urlParams.get('employeeId');
-    console.log(employeeId);
-
-
-    window.addEventListener("DOMContentLoaded", async function () {
-        try {
-            const response = await fetch(`http://localhost:5000/api/auth/employee/${employeeId}`);
-            const data = await response.json();
-            console.log(data);
-            let mainBody = document.getElementById("employeeMain");
-
-
-            if (!data.inProject) {
-                mainBody.innerHTML = `<h2>Hello, ${data.name} Currently You are not assigned to any project.</h2>`;
-                return;
-            }
-            mainBody.innerHTML = `<div class="workerTop workerCard animate-slide-up scroll-animate">
+            <div class="workerTop workerCard animate-slide-up scroll-animate">
             <h2>Hello, ${data.name}</h2>
             <p class="largeFont">Working Project:${data.workingProject}</p>
             <p class="largeFont" class="largeFont">Site Name: ${data.workingSite}</p>
@@ -70,7 +70,12 @@
         <div id="chart" class="chartBox hidden">
             <br>
             <canvas id="attendanceChart" width="10" height="10"></canvas>
-        </div><br><br><br><br><br>`;
+        </div><br><br><br><br><br>
+         </main>
+    <footer>
+        <p>&copy; 2025 Attendance Maintenance System</p>
+    </footer>
+        `;
 
             let profile = document.getElementById("employeeProfile");
             let logout = document.getElementById("employeeLogout");
@@ -80,7 +85,7 @@
                     window.location.href = "login.html";
                 }
             });
-            logout.classList.remove("hidden");
+            // logout.classList.remove("hidden");
 
 
 
@@ -124,7 +129,7 @@
 
         }
         catch (error) {
-            let mainBody = document.getElementById("employeeMain");
+            let mainBody = document.getElementById("employee-load");
             mainBody.innerHTML = "<h1>Cannot load Data</h1>";
         }
     let checkin = document.getElementById("checkIN");

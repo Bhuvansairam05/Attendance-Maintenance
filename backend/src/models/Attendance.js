@@ -13,7 +13,15 @@ const AttendanceSchema = new mongoose.Schema({
     },
     checkOutTime:{
         type:Date,
-    }
+    },
+    isApproved: {
+  type: Boolean,
+  default: false
+},isRejected: {
+  type: Boolean,
+  default: false
+}
+
 }, { timestamps: true });
 
 module.exports = mongoose.model('Attendance', AttendanceSchema);
