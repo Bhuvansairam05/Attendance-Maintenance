@@ -59,7 +59,7 @@ exports.getAttendance = async (req,res)=>{
         if(!response){
            return  res.status(400).json({error:"no data"});
         }
-            return res.status(200).json({message:"successfull"});
+            return res.status(200).json({success:true, message:"successfull",data:response});
     }
     catch(error){
         return res.status(500).json({error:"Server Error"});
