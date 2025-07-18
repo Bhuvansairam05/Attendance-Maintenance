@@ -101,13 +101,13 @@
         profile.addEventListener("click", () => {
             if (logout.classList.contains("hidden")) {
                 logout.classList.remove("hidden");
-                logout.addEventListener("click",()=>{
-                    if(confirm("Are you sure you want to LogOut?")){
+                logout.addEventListener("click", () => {
+                    if (confirm("Are you sure you want to LogOut?")) {
                         window.location.href = "login.html";
                     }
-                    else{
+                    else {
                         logout.classList.add("hidden");
-                        
+
                     }
                 });
                 logout.classList.remove("hidden");
@@ -182,31 +182,53 @@
 
             if (role === "employee") {
                 userData.salary = monthlyPay;
+                try {
+                    const res = await fetch("http://localhost:5000/api/admins/create-employee", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(userData),
+                    });
+
+                    const result = await res.json();
+
+                    if (res.ok && result.success) {
+                        alert(" User added successfully!");
+                        document.getElementById("signupForm").reset();
+                        document.getElementById("signupAdmin").classList.add("hidden");
+                    } else {
+                        alert("Failed to add user: " + result.message);
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    alert("Something went wrong while adding the user.");
+                }
             }
 
             // Send to backend
             try {
-                const res = await fetch("http://localhost:5000/api/auth/add-user", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(userData),
-                });
+                    const res = await fetch("http://localhost:5000/api/admins/create-site-lead", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(userData),
+                    });
 
-                const result = await res.json();
+                    const result = await res.json();
 
-                if (res.ok && result.success) {
-                    alert(" User added successfully!");
-                    document.getElementById("signupForm").reset();
-                    document.getElementById("signupAdmin").classList.add("hidden");
-                } else {
-                    alert("Failed to add user: " + result.message);
+                    if (res.ok && result.success) {
+                        alert(" User added successfully!");
+                        document.getElementById("signupForm").reset();
+                        document.getElementById("signupAdmin").classList.add("hidden");
+                    } else {
+                        alert("Failed to add user: " + result.message);
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    alert("Something went wrong while adding the user.");
                 }
-            } catch (error) {
-                console.error("Error:", error);
-                alert("Something went wrong while adding the user.");
-            }
         });
 
 
