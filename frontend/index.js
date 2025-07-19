@@ -35,7 +35,7 @@ login.addEventListener("submit", async function (e) {
       }
     }
     catch {
-      alert("Cannot fetch data");
+      alert("500 Server not found");
     }
   }
 })

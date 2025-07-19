@@ -269,6 +269,7 @@ main {
 
 #warning {
     color: red;
+    font-size: 20px;
 }
 
 .login-button {
