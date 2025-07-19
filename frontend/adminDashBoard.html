@@ -11,12 +11,20 @@
 </head>
 
 <body id="admin-body">
-
+    <h1 id="admin-load" align="center">Please wait! Website is Loading</h1>
     
     <script>
+        let params =new URLSearchParams(window.location.search);
+        let adminId = params.get("adminId");
+        console.log(params);
+        let load = document.getElementById("admin-load");
         let adminBody = document.getElementById("admin-body");
-        window.addEventListener("DOMContentLoaded",()=>{
-            adminBody.innerHTML=`
+        window.addEventListener("DOMContentLoaded",async function(){
+            try{ 
+                let response = await fetch(`http://localhost:5000/api/auth/admin/${adminId}`);
+                if(response.ok){
+                    let results = await response.json();
+                adminBody.innerHTML=`
                 <div class="container">
                     <div class="sidebarFixed">
                         <div class="logoBox">
@@ -31,13 +39,13 @@
                     </div>
                     <main class="mainContent">
                         <header class="topBar">
-                            <h1>Hello Admin</h1>
+                            <h1>Hello ${results.username}</h1>
                             <div class="rightTop">
                                 <div id="profile" class="profileIcon">👤</div>
-                                <div class="hidden" id="logout">LogOut -></div>
+                                
                             </div>
                         </header>
-
+                        <div class="hidden" id="logout">Logout</div>
                         <section class="dashboardContent">
                             <h2>Dashboard Overview</h2>
                             <p>Welcome to the Admin Panel. Here you can manage site leads, monitor employee performance,
@@ -113,7 +121,6 @@
                         }
                         else {
                             logout.classList.add("hidden");
-
                         }
                     });
                     logout.classList.remove("hidden");
@@ -237,9 +244,19 @@
                     }
                 }
             });
+            }
+            else{
+                load.innerText="404 admin not found";
+            }
+            }
+            catch(error){
+            
+            load.innerText="500 Server not found";
+            }
 
         });
-    </script>
+        
+        </script>
 </body>
 
 </html>
