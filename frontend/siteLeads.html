@@ -10,8 +10,14 @@
     <link rel="stylesheet" href="adminStyling.css">
 </head>
 
-<body>
-    <div class="container">
+<body id="sitelead-list-body">
+    <h1 id="on-load">Please Wait! Website is loading...</h1> 
+</body>
+    <script>
+        let body = document.getElementById("sitelead-list-body");
+        window.addEventListener("DOMContentLoaded",()=>{
+            body.innerHTML=`
+                <div class="container">
         <!-- Sidebar -->
         <aside class="sidebarFixed">
             <div class="logoBox">
@@ -75,9 +81,7 @@
     <footer>
         <p>&copy; 2025 Attendance Maintenance System</p>
     </footer>
-
-    <script>
+            `;
+        })
     </script>
-</body>
-
 </html>
