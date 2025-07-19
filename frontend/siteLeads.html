@@ -11,77 +11,96 @@
 </head>
 
 <body id="sitelead-list-body">
-    <h1 id="on-load">Please Wait! Website is loading...</h1> 
+    <h1 id="on-load">Please Wait! Website is loading...</h1>
 </body>
-    <script>
-        let body = document.getElementById("sitelead-list-body");
-        window.addEventListener("DOMContentLoaded",()=>{
-            body.innerHTML=`
-                <div class="container">
-        <!-- Sidebar -->
-        <aside class="sidebarFixed">
-            <div class="logoBox">
-                <div class="logoIcon"></div> Attendee
-            </div>
-            <nav class="navMenu">
-                <a href="adminDashBoard.html">Dashboard</a>
-                <a href="siteLeads.html" class="active">Site Leads</a>
-                <a href="workers.html">Workers</a>
-                <a href="projects.html">Projects</a>
-            </nav>
-        </aside>
+<script>
+    let body = document.getElementById("sitelead-list-body");
+    let load = document.getElementById("on-load");
+    window.addEventListener("DOMContentLoaded", async function () {
+        try {
+            const res = await fetch("http://localhost:5000/api/admins/site-leads");
+            if (res.ok) {
+                let result = await res.json();
+                console.log(result);
+                body.innerHTML = `
+                        <div class="container">
+                            <aside class="sidebarFixed">
+                                <div class="logoBox">
+                                    <div class="logoIcon"></div> Attendee
+                                </div>
+                                <nav class="navMenu">
+                                    <a href="adminDashBoard.html">Dashboard</a>
+                                    <a href="siteLeads.html" class="active">Site Leads</a>
+                                    <a href="workers.html">Workers</a>
+                                    <a href="projects.html">Projects</a>
+                                </nav>
+                            </aside>
+                            <main class="mainContent">
+                                <header class="topBar">
+                                    <h1></h1>
+                                    <div id="profile" class="profileIcon">👤</div>
+                                </header>
+                                <div class="hidden" id="logout">Logout</div>
+                                <section class="dashboardContent">
+                                    <h2>SiteLeads</h2>
+                                    <table class="dashboardTable">
+                                        <thead>
+                                            <tr>
+                                                <th>S.No</th>
+                                                <th>Site Lead Name</th>
+                                                <th>Working Project</th>
+                                                <th>Site No</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table-body">
+                                        </tbody>
+                                    </table>
+                                </section>
+                            </main>
+                        </div>
+                        <footer>
+                            <p>&copy; 2025 Attendance Maintenance System</p>
+                        </footer>
+                    `;
+                let profile = document.getElementById("profile");
+                let logout = document.getElementById("logout");
+                profile.addEventListener("click", () => {
+                    if (logout.classList.contains("hidden")) {
+                        logout.classList.remove("hidden");
+                        logout.addEventListener("click", () => {
+                            if (confirm("Are you sure you want to LogOut?")) {
+                                window.location.href = "login.html";
+                            }
+                            else {
+                                logout.classList.add("hidden");
+                            }
+                        });
+                        logout.classList.remove("hidden");
+                    } else {
+                        logout.classList.add("hidden");
+                    }
+                });
+                let tableBody = document.getElementById("table-body");
+                tableBody.innerHTML = "";
+                for (let i = 0; i < result.length; i++) {
+                    tableBody.innerHTML += `
+                            <tr>
+                                <td>${i + 1}</td>
+                                <td>${result[i].name}</td>
+                                <td>${result[i].workingProject}</td>
+                                <td>${result[i].workingSite}</td>
+                            </tr>
+                        `;
+                }
+            }
+            else {
+                load.innerHTML = "404 Data not Found";
+            }
+        }
+        catch (error) {
+            load.innerText = "500 Server not Found";
+        }
+    })
+</script>
 
-        <!-- Main Content -->
-        <main class="mainContent">
-            <header class="topBar">
-                <h1></h1>
-                <div class="profileIcon">👤</div>
-            </header>
-
-            <section class="dashboardContent">
-                <h2>SiteLeads</h2>
-                <table class="dashboardTable">
-                    <thead>
-                        <tr>
-                            <th>S.No</th>
-                            <th>Site Lead Name</th>
-                            <th>Working Project</th>
-                            <th>Site No</th>
-                            <th>Projects Done</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Ram</td>
-                            <td>Metro Expansion</td>
-                            <td>SL-102</td>
-                            <td>5</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Shyam</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>3</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Sai</td>
-                            <td>Highway Work</td>
-                            <td>SL-317</td>
-                            <td>8</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-        </main>
-    </div>
-
-    <footer>
-        <p>&copy; 2025 Attendance Maintenance System</p>
-    </footer>
-            `;
-        })
-    </script>
 </html>

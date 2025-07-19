@@ -10,83 +10,103 @@
     <link rel="stylesheet" href="adminStyling.css">
 </head>
 
-<body>
-    <div class="container">
-        <!-- Sidebar -->
-        <aside class="sidebarFixed">
-            <div class="logoBox">
-                <div class="logoIcon"></div> Attendee
-            </div>
-            <nav class="navMenu">
-                <a href="adminDashBoard.html">Dashboard</a>
-                <a href="siteLeads.html">Site Leads</a>
-                <a href="workers.html" class="active">Workers</a>
-                <a href="projects.html">Projects</a>
-            </nav>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="mainContent">
-            <header class="topBar">
-                <h1></h1>
-                <div class="profileIcon">👤</div>
-            </header>
-
-            <section class="dashboardContent">
-                <h2>Workers</h2>
-                <table class="dashboardTable">
-                    <thead>
-                        <tr>
-                            <th>S.No</th>
-                            <th>Worker Name</th>
-                            <th>Working Project</th>
-                            <th>Site No</th>
-                            <th>Site Lead Name</th>
-                            <th>Monthly Pay(in rupees)</th>
-                            <th>Get Info</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Ravi</td>
-                            <td>Metro Expansion</td>
-                            <td>SL-102</td>
-                            <td>Ram</td>
-                            <td>5000</td>
-                            <td><button class="getInfo" onclick="window.location.href='workerDetails.html?workerId=1'">Get Info</button></td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Prakash</td>
-                            <td>Metro Expansion</td>
-                            <td>SL-102</td>
-                            <td>Ram</td>
-                            <td>5000</td>
-<td><button class="getInfo" onclick="window.location.href='workerDetails.html?workerId=2'">Get Info</button></td>
-
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Akash</td>
-                            <td>Highway Work</td>
-                            <td>SL-317</td>
-                            <td>Sai</td>
-                            <td>10000</td>
-                            <td><button class="getInfo" onclick="window.location.href='workerDetails.html?workerId=3'">Get Info</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-        </main>
-    </div>
-
-    <footer>
-        <p>&copy; 2025 Attendance Maintenance System</p>
-    </footer>
-
-    <script>
-    </script>
+<body id="admin-worker-body">
+    <h1 align="center" id="load-data">Please Wait! Site is Loading...</h1>
+    
 </body>
-
+<script>
+    let body=document.getElementById("admin-worker-body");
+    let load = document.getElementById("load-data");
+    window.addEventListener("DOMContentLoaded",async function(){
+        try{
+            const response =await fetch("http://localhost:5000/api/admins/employees");
+            console.log(response);
+            if(response.ok){
+                let result = await response.json();
+                console.log(result);
+                body.innerHTML=`
+                    <div class="container">
+                        <aside class="sidebarFixed">
+                            <div class="logoBox">
+                                <div class="logoIcon"></div> Attendee
+                            </div>
+                            <nav class="navMenu">
+                                <a href="adminDashBoard.html">Dashboard</a>
+                                <a href="siteLeads.html">Site Leads</a>
+                                <a href="workers.html" class="active">Workers</a>
+                                <a href="projects.html">Projects</a>
+                            </nav>
+                        </aside>
+                        <main class="mainContent">
+                            <header class="topBar">
+                                <h1></h1>
+                                <div id="profile" class="profileIcon">👤</div>
+                            </header>
+                            <div class="hidden" id="logout">Logout</div>
+                            <section class="dashboardContent">
+                                <h2>Workers</h2>
+                                <table class="dashboardTable">
+                                    <thead>
+                                        <tr>
+                                            <th>S.No</th>
+                                            <th>Worker Name</th>
+                                            <th>Working Project</th>
+                                            <th>Site No</th>
+                                            <th>Salary(in rupees)</th>
+                                            <th>Get Info</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-body">
+                                    </tbody>
+                                </table>
+                            </section>
+                        </main>
+                    </div>
+                    <footer>
+                        <p>&copy; 2025 Attendance Maintenance System</p>
+                    </footer>
+                `;
+                let profile = document.getElementById("profile");
+                let logout = document.getElementById("logout");
+                profile.addEventListener("click", () => {
+                    if (logout.classList.contains("hidden")) {
+                        logout.classList.remove("hidden");
+                        logout.addEventListener("click", () => {
+                            if (confirm("Are you sure you want to LogOut?")) {
+                                window.location.href = "login.html";
+                            }
+                            else {
+                                logout.classList.add("hidden");
+                            }
+                        });
+                        logout.classList.remove("hidden");
+                    } else {
+                        logout.classList.add("hidden");
+                    }
+                });
+                let tableBody = document.getElementById("table-body");
+                tableBody.innerHTML="";
+                for(let i=0;i<result.length;i++){
+                    tableBody.innerHTML+=`
+                        <tr>
+                            <td>${i+1}</td>
+                            <td>${result[i].name}</td>
+                            <td>${result[i].workingProject}</td>
+                            <td>${result[i].workingSite}</td>
+                            <td>${result[i].monthlyPay}</td>
+                            <td><button class="getInfo">getInfo</button></td>
+                        </tr>
+                    `;
+                }
+            }
+            else{
+                let result = response.json();
+                load.innerText=`${result.error}`;
+            }
+        }
+        catch(error){
+            load.innerText="500 Server not Found.";
+        }
+    })
+</script>
 </html>
