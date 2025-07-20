@@ -4,7 +4,7 @@ const projectSchema = new mongoose.Schema(
   {
     name: String,
     description: String,
-    startDate: { type: Date, default: Date.now },
+    startDate: { type: Date },
     totalWorkingDays: { type: Number, default: 0 },
     totalWorkingMonths: { type: Number, default: 0 },
     totalWorkingYears: { type: Number, default: 0 },
