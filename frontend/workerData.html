@@ -31,7 +31,7 @@ const employeeId = params.get("employeeId");
 
 
             if (!data.inProject) {
-                mainBody.innerHTML = `<p class="largeFont">Name: ${data.name} Currently You are not assigned to any project.</p>`;
+                mainBody.innerHTML = `<h1 align="center"> ${data.name} is not assigned to any project.</h1>`;
                 return;
             }
             mainBody.innerHTML = `

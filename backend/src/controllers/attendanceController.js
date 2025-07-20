@@ -55,6 +55,9 @@ exports.checkOut = async (req, res) => {
 exports.getAttendance = async (req, res) => {
     try {
         const employeeId = req.params.employeeId;
+        if(!employeeId){
+            return res.status(404).json({error:"data not found"})
+        }
         const now = new Date();
         const date = now.toISOString().split('T')[0];
         const response = await Attendance.findOne({ employeeId: employeeId, date: date });

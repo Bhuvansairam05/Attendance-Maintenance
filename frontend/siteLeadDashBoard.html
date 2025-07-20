@@ -32,8 +32,13 @@
                 return;
             }
             const result = await response.json();
-            console.log(result);
+            console.log("result", result);
             if (response.ok) {
+                console.log(!result.inProject);
+                if (!result.projectName) {
+                    siteLeadBody.innerHTML = `<h1 align="center">Hello ${result.name} you are not assigned to any project</h1>`;
+                    return;
+                }
                 siteLeadBody.innerHTML = `
                 <header class="worker-header">
                     <div class="title">
@@ -85,38 +90,47 @@
                 let tableBody = document.getElementById("employees-table-body");
                 tableBody.innerHTML = "";
                 const Employees = result.Employees;
+                console.log(Employees);
                 let index = 1;
                 for (let i = 0; i < Employees.length; i++) {
                     let employeeDetails = await fetch(`http://localhost:5000/api/auth/employee/${Employees[i]}`);
                     let details = await employeeDetails.json();
                     let attendanceDetails = await fetch(`http://localhost:5000/api/attendance/getAttendance/${Employees[i]}`);
-                    let attendanceresponse = await attendanceDetails.json();
-                    const checkInisoString = attendanceresponse.data.checkInTime;
-                    const checkOutisoString = attendanceresponse.data.checkOutTime;
-                    console.log(attendanceresponse);
                     let actualCheckIn = "";
                     let actualCheckOut;
-                    if (checkOutisoString == undefined) {
-                        console.log("no date");
-                        actualCheckOut = "--";
-                    } else if (checkOutisoString) {
-                        actualCheckOut = formatTimeWithAmPm(checkOutisoString);
-                    }
-                    console.log(actualCheckOut);
-                    if (!checkInisoString) {
+                    if (attendanceDetails.status === 400) {
                         actualCheckIn = "--";
+                        actualCheckOut = "--";
                     }
-                    else if (checkInisoString) {
-                        actualCheckIn = formatTimeWithAmPm(checkInisoString)
-                    }
-                    function formatTimeWithAmPm(isoString) {
-                        const date = new Date(isoString);
-                        const options = {
-                            hour: 'numeric',
-                            minute: 'numeric',
-                            hour12: true
-                        };
-                        return date.toLocaleTimeString('en-US', options);
+                    else {
+                        let attendanceresponse = await attendanceDetails.json();
+                        const checkInisoString = attendanceresponse.data.checkInTime;
+                        const checkOutisoString = attendanceresponse.data.checkOutTime;
+                        console.log(attendanceresponse);
+
+
+                        if (checkOutisoString == undefined) {
+                            console.log("no date");
+                            actualCheckOut = "--";
+                        } else if (checkOutisoString) {
+                            actualCheckOut = formatTimeWithAmPm(checkOutisoString);
+                        }
+                        console.log(actualCheckOut);
+                        if (!checkInisoString) {
+                            actualCheckIn = "--";
+                        }
+                        else if (checkInisoString) {
+                            actualCheckIn = formatTimeWithAmPm(checkInisoString)
+                        }
+                        function formatTimeWithAmPm(isoString) {
+                            const date = new Date(isoString);
+                            const options = {
+                                hour: 'numeric',
+                                minute: 'numeric',
+                                hour12: true
+                            };
+                            return date.toLocaleTimeString('en-US', options);
+                        }
                     }
                     // console.log(timeWithAmPm);
                     tableBody.innerHTML += `
@@ -159,8 +173,8 @@
                         button.addEventListener("click", async function () {
                             const employeeId = this.getAttribute("data-id");
                             try {
-                                let response = await fetch(`http://localhost:5000/api/attendance/approve/${employeeId}`,{
-                                    method:"POST"
+                                let response = await fetch(`http://localhost:5000/api/attendance/approve/${employeeId}`, {
+                                    method: "POST"
                                 });
                                 let result = await response.json();
                                 warningBox.classList.remove("hidden");
@@ -180,8 +194,8 @@
                         button.addEventListener("click", async function () {
                             const employeeId = this.getAttribute("data-id");
                             try {
-                                let response = await fetch(`http://localhost:5000/api/attendance/reject/${employeeId}`,{
-                                    method:"POST"
+                                let response = await fetch(`http://localhost:5000/api/attendance/reject/${employeeId}`, {
+                                    method: "POST"
                                 });
                                 let result = await response.json();
                                 warningBox.classList.remove("hidden");
@@ -197,10 +211,10 @@
                         });
                     });
                     const getInfoButtons = document.querySelectorAll(".getEmployeeInfo");
-                    getInfoButtons.forEach(button=>{
-                        button.addEventListener("click",function (){
+                    getInfoButtons.forEach(button => {
+                        button.addEventListener("click", function () {
                             const employeeId = this.getAttribute("data-id");
-                            window.location.href=`workerData.html?employeeId=${employeeId}`;
+                            window.location.href = `workerData.html?employeeId=${employeeId}`;
                         })
                     });
                 }

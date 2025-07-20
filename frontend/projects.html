@@ -17,10 +17,10 @@
                 <div class="logoIcon"></div> Attendee
             </div>
             <nav class="navMenu">
-                <a href="adminDashBoard.html">Dashboard</a>
-                <a href="siteLeads.html">Site Leads</a>
-                <a href="workers.html">Workers</a>
-                <a href="projects.html" class="active">Projects</a>
+                <a href="adminDashBoard.html?adminId=${results._id}" >Dashboard</a>
+                <a href="siteLeads.html?adminId=${results._id}">Site Leads</a>
+                <a href="workers.html?adminId=${results._id}">Workers</a>
+                <a href="projects.html?adminId=${results._id}" class="active">Projects</a>
             </nav>
         </aside>
 
@@ -45,13 +45,13 @@
                         <div id="sitesList"></div>
                         <label for="addSite">Add Site</label>
                         <button id="addSite">+</button>
-                       
+
                         <form action="submit" id="addSiteForm" class="addProjectForm hidden">
                             <label for="SiteName">SiteName:</label>
                             <input type="text" id="SiteName">
                             <label for="siteLeadOption">Select Site Lead</label>
                             <select name="siteLead" id="siteLeadOption">
-                                
+
                             </select>
                             <label for="workerOption">Add Workers</label>
                             <select name="workers" id="workerOption">
@@ -94,7 +94,9 @@
                         <td>Highway Work</td>
                         <td>1</td>
                         <td>1</td>
-                        <td><button class="getInfo" onclick="window.location.href='projectDetails.html?projectId=3'">View Details</button></td>
+                        <td><button class="getInfo"
+                                onclick="window.location.href='projectDetails.html?projectId=3'">View Details</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -111,10 +113,10 @@
         let projectForm = document.getElementById("addProjectForm");
         let site = document.getElementById("addSite");
         let siteForm = document.getElementById("addSiteForm");
-        project.addEventListener("click",()=>{
+        project.addEventListener("click", () => {
             projectForm.classList.remove("hidden");
         });
-        site.addEventListener("click",()=>{
+        site.addEventListener("click", () => {
             siteForm.classList.remove("hidden");
         });
     </script>

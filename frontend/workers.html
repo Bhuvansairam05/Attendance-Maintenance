@@ -15,14 +15,18 @@
     
 </body>
 <script>
+    let params = new URLSearchParams(window.location.search);
+    let adminId = params.get("adminId");
     let body=document.getElementById("admin-worker-body");
     let load = document.getElementById("load-data");
     window.addEventListener("DOMContentLoaded",async function(){
         try{
             const response =await fetch("http://localhost:5000/api/admins/employees");
+            const adminResponse = await fetch(`http://localhost:5000/api/auth/admin/${adminId}`);
             console.log(response);
-            if(response.ok){
+            if(response.ok && adminResponse.ok){
                 let result = await response.json();
+                let adminResult = await adminResponse.json();
                 console.log(result);
                 body.innerHTML=`
                     <div class="container">
@@ -31,11 +35,11 @@
                                 <div class="logoIcon"></div> Attendee
                             </div>
                             <nav class="navMenu">
-                                <a href="adminDashBoard.html">Dashboard</a>
-                                <a href="siteLeads.html">Site Leads</a>
-                                <a href="workers.html" class="active">Workers</a>
-                                <a href="projects.html">Projects</a>
-                            </nav>
+                            <a href="adminDashBoard.html?adminId=${adminResult._id}" >Dashboard</a>
+                            <a href="siteLeads.html?adminId=${adminResult._id}">Site Leads</a>
+                            <a href="workers.html?adminId=${adminResult._id}" class="active">Workers</a>
+                            <a href="projects.html?adminId=${adminResult._id}">Projects</a>
+                        </nav>
                         </aside>
                         <main class="mainContent">
                             <header class="topBar">
@@ -94,10 +98,17 @@
                             <td>${result[i].workingProject}</td>
                             <td>${result[i].workingSite}</td>
                             <td>${result[i].monthlyPay}</td>
-                            <td><button class="getInfo">getInfo</button></td>
+                            <td><button data-id=${result[i]._id} class="getInfo">getInfo</button></td>
                         </tr>
                     `;
                 }
+                const getInfoButtons = document.querySelectorAll(".getInfo");
+                    getInfoButtons.forEach(button => {
+                        button.addEventListener("click", function () {
+                            const employeeId = this.getAttribute("data-id");
+                            window.location.href = `workerData.html?employeeId=${employeeId}`;
+                        })
+                    });
             }
             else{
                 let result = response.json();

@@ -56,13 +56,19 @@ const getSiteLead = async(req,res)=>{
       res.status(404).json({error:"siteLeadId required"});
     }
     const siteLead = await Site.findOne({"siteLeadID":req.params.siteLeadId});
-    if(!siteLead){
-      res.status(404).json({error:"Wrong siteLead Id"});
+    const siteLeadData = await SiteLead.findById(req.params.siteLeadId);
+    console.log(siteLead);
+    console.log(siteLeadData);
+    if(!siteLead && siteLeadData){
+      return res.status(200).json(siteLeadData);
     }
-    res.status(200).json(siteLead);
+    else if(!siteLead){
+      return res.status(404).json({error:"Wrong siteLead Id"});
+    }
+    return res.status(200).json(siteLead);
   }
   catch(error){
-    res.status(500).json({error:`error occured while fetching data`});
+    return res.status(500).json({error:`error occured while fetching data`});
   }
 }
 

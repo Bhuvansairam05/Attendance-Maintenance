@@ -11,16 +11,20 @@
 </head>
 
 <body id="sitelead-list-body">
-    <h1 id="on-load">Please Wait! Website is loading...</h1>
+    <h1 id="on-load" align="center">Please Wait! Website is loading...</h1>
 </body>
 <script>
+    let params = new URLSearchParams(window.location.search);
+    let adminId = params.get("adminId");
     let body = document.getElementById("sitelead-list-body");
     let load = document.getElementById("on-load");
     window.addEventListener("DOMContentLoaded", async function () {
         try {
             const res = await fetch("http://localhost:5000/api/admins/site-leads");
-            if (res.ok) {
+            const adminResponse = await fetch(`http://localhost:5000/api/auth/admin/${adminId}`);
+            if (res.ok && adminResponse.ok) {
                 let result = await res.json();
+                let adminResult = await adminResponse.json();
                 console.log(result);
                 body.innerHTML = `
                         <div class="container">
@@ -29,11 +33,11 @@
                                     <div class="logoIcon"></div> Attendee
                                 </div>
                                 <nav class="navMenu">
-                                    <a href="adminDashBoard.html">Dashboard</a>
-                                    <a href="siteLeads.html" class="active">Site Leads</a>
-                                    <a href="workers.html">Workers</a>
-                                    <a href="projects.html">Projects</a>
-                                </nav>
+                            <a href="adminDashBoard.html?adminId=${adminResult._id}" >Dashboard</a>
+                            <a href="siteLeads.html?adminId=${adminResult._id}" class="active">Site Leads</a>
+                            <a href="workers.html?adminId=${adminResult._id}">Workers</a>
+                            <a href="projects.html?adminId=${adminResult._id}">Projects</a>
+                        </nav>
                             </aside>
                             <main class="mainContent">
                                 <header class="topBar">
