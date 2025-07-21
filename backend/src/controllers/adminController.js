@@ -130,8 +130,7 @@ exports.createProject = async (req, res) => {
 exports.getAllProjects = async (req, res) => {
   try {
     const projects = await Project.find().populate("sites");
-    const sites = await Site.find().populate("siteLeadID").populate("workers");
-    res.status(200).json({ projects, sites });
+    res.status(200).json({ projects });
   } catch (error) {
     res.status(500).json({ error: "Error fetching projects" });
   }

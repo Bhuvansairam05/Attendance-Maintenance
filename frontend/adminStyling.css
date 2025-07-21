@@ -131,7 +131,7 @@ body {
     padding: 2%;
     height: auto;
     width: auto;
-    border: 2px solid black;
+    border: 1px solid black;
     border-radius: 15px;
     display: flex;
     flex-direction: column;

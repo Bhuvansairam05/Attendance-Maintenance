@@ -19,107 +19,83 @@
     let projectBody = document.getElementById("projects-body");
     window.addEventListener("DOMContentLoaded", async function () {
         try {
+            const projectsResponse = await fetch("http://localhost:5000/api/admins/projects");
             const adminResponse = await fetch(`http://localhost:5000/api/auth/admin/${adminId}`);
             if (adminResponse.ok) {
+                
                 let adminResult = await adminResponse.json();
+                
+                console.log("admin",adminResult);
                 projectBody.innerHTML = `
-            <div class="container">
-                <aside class="sidebarFixed">
-                    <div class="logoBox">
-                        <div class="logoIcon"></div> Attendee
-                    </div>
-                    <nav class="navMenu">
-                        <a href="adminDashBoard.html?adminId=${adminResult._id}" >Dashboard</a>
-                        <a href="siteLeads.html?adminId=${adminResult._id}">Site Leads</a>
-                        <a href="workers.html?adminId=${adminResult._id}">Workers</a>
-                        <a href="projects.html?adminId=${adminResult._id}" class="active">Projects</a>
-                    </nav>
-                </aside>
-
-
-                <main class="mainContent">
-                    <header class="topBar">
-                        <h1></h1>
-                        <div id="profile" class="profileIcon">👤</div>
-                    </header>
-                    <div class="hidden" id="logout">Logout</div>
-                    <section class="dashboardContent">
-                        <h2>Projects</h2>
-                        <button id="addProjectBtn"> Add New Project</button>
-                        <div class="addFormDiv">
-                            <div id="addProjectForm" class="addProjectForm hidden">
-                                <label for="projectName">Project Name: </label>
-                                <input type="text" id="projectName">
-                                <label for="projectDescription">Project Descriptioin</label>
-                                <input type="text" id="projectDescription">
-                                <label for="startDate">Start Date: </label>
-                                <input type="date" id="startDate">
-                                <div id="sitesList"></div>
-                                <label for="addSite">Add Site</label>
-                                <button id="addSite">+</button>
-
-                                <form action="submit" id="addSiteForm" class="addProjectForm hidden">
-                                    <label for="SiteName">SiteName:</label>
-                                    <input type="text" id="SiteName">
-                                    <label for="siteLeadOption">Select Site Lead</label>
-                                    <select name="siteLead" id="siteLeadOption">
-
-                                    </select>
-                                    <label for="workerOption">Add Workers</label>
-                                    <select name="workers" id="workerOption">
-                                        <option value="" selected>select</option>
-                                        <option value="raghu">Raghu</option>
-                                    </select>
-                                    <button id="add">Add Site</button>
-                                </form>
-                                <button>Add Project</button>
+                    <div class="container">
+                        <aside class="sidebarFixed">
+                            <div class="logoBox">
+                                <div class="logoIcon"></div> Attendee
                             </div>
-                        </div>
-                    </section><br><br>
-                    <table class="dashboardTable">
-                        <thead>
-                            <tr>
-                                <th>S.No</th>
-                                <th>Project Name</th>
-                                <th>No of Sites</th>
-                                <th>No of Workers</th>
-                                <th>Details</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Metro Expansion</td>
-                                <td>1</td>
-                                <td>2</td>
-                                <td><button class="getInfo">View Details</button></td>
-                            </tr>
-                            <!-- <tr>
-                                <td>2</td>
-                                <td>Bridge Renovation</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td><button>View Details</button></td>
-                            </tr> -->
-                            <tr>
-                                <td>2</td>
-                                <td>Highway Work</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td><button class="getInfo"
-                                        onclick="window.location.href='projectDetails.html?projectId=3'">View Details</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                </main>
-            </div>
-
-            <footer>
-                <p>&copy; 2025 Attendance Maintenance System</p>
-            </footer>
-        `;
+                            <nav class="navMenu">
+                                <a href="adminDashBoard.html?adminId=${adminResult._id}" >Dashboard</a>
+                                <a href="siteLeads.html?adminId=${adminResult._id}">Site Leads</a>
+                                <a href="workers.html?adminId=${adminResult._id}">Workers</a>
+                                <a href="projects.html?adminId=${adminResult._id}" class="active">Projects</a>
+                            </nav>
+                        </aside>
+                        <main class="mainContent">
+                            <header class="topBar">
+                                <h1></h1>
+                                <div id="profile" class="profileIcon">👤</div>
+                            </header>
+                            <div class="hidden" id="logout">Logout</div>
+                            <section class="dashboardContent">
+                                <h2>Projects</h2>
+                                <button id="addProjectBtn"> Add New Project</button>
+                                <div class="addFormDiv">
+                                    <div id="addProjectForm" class="addProjectForm hidden">
+                                        <label for="projectName">Project Name: </label>
+                                        <input type="text" id="projectName">
+                                        <label for="projectDescription">Project Descriptioin</label>
+                                        <input type="text" id="projectDescription">
+                                        <label for="startDate">Start Date: </label>
+                                        <input type="date" id="startDate">
+                                        <div id="sitesList"></div>
+                                        <label for="addSite">Add Site</label>
+                                        <button id="addSite">+</button>
+                                        <form action="submit" id="addSiteForm" class="addProjectForm hidden">
+                                            <label for="SiteName">SiteName:</label>
+                                            <input type="text" id="SiteName">
+                                            <label for="siteLeadOption">Select Site Lead</label>
+                                            <select name="siteLead" id="siteLeadOption">
+                                            </select>
+                                            <label for="workerOption">Add Workers</label>
+                                            <select name="workers" id="workerOption">
+                                                <option value="" selected>select</option>
+                                                <option value="raghu">Raghu</option>
+                                            </select>
+                                            <button id="add">Add Site</button>
+                                        </form>
+                                        <button>Add Project</button>
+                                    </div>
+                                </div>
+                            </section><br><br>
+                            <table class="dashboardTable">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Project Name</th>
+                                        <th>No of Sites</th>
+                                        <th>No of Workers</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-body">
+                                </tbody>
+                            </table>
+                        </main>
+                    </div>
+                    <footer>
+                        <p>&copy; 2025 Attendance Maintenance System</p>
+                    </footer>
+                `;
+                
                 let profile = document.getElementById("profile");
                 let logout = document.getElementById("logout");
                 profile.addEventListener("click", () => {
@@ -148,6 +124,24 @@
                 site.addEventListener("click", () => {
                     siteForm.classList.remove("hidden");
                 });
+            }
+            if(adminResponse.ok && projectsResponse.ok){
+                let projects = await projectsResponse.json();
+                console.log("projects",projects.length);
+                let tableBody = document.getElementById("table-body");
+                tableBody.innerHTML="";
+                for(let i=0;i<projects.length;i++){
+                    console.log('inloop');
+                    let sitesCount = projects[i].sites.length;
+                    console.log(sitesCount);
+                    tableBody.innerHTML+=`
+                        <tr>
+                            <td>${i+1}</td>
+                            <td>${projects[i].name}</td>
+                            <td>${sitesCount}</td>
+                        </tr>
+                    `;
+                }
             }
             else {
                 projectBody.innerHTML = `<h1 align="center">404 Data not found</h1>`;
