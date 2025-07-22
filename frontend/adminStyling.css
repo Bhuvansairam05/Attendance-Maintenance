@@ -150,7 +150,7 @@ body {
 .getInfo {
     height: auto;
     width: auto;
-    padding: 3px;
+    padding: 5px;
     background-color: rgb(0, 183, 255);
     color: white;
     border: 1px solid transparent;
@@ -296,7 +296,6 @@ footer {
 
 .dashboardTable tbody tr:hover {
     background-color: #f0f8ff;
-    /* cursor: pointer; */
 }
 
 .dashboardTable td {
@@ -308,7 +307,7 @@ footer {
     background-color: rgb(0, 183, 255);
     color: white;
     font-size: 1rem;
-    padding: 0.8rem 2rem;
+    padding: 10px;
     border: none;
     border-radius: 10px;
     cursor: pointer;

@@ -127,21 +127,36 @@
             }
             if(adminResponse.ok && projectsResponse.ok){
                 let projects = await projectsResponse.json();
-                console.log("projects",projects.length);
+                console.log("projects",projects.projects);
+                let projectsData = projects.projects;
                 let tableBody = document.getElementById("table-body");
                 tableBody.innerHTML="";
-                for(let i=0;i<projects.length;i++){
+                for(let i=0;i<projectsData.length;i++){
                     console.log('inloop');
-                    let sitesCount = projects[i].sites.length;
-                    console.log(sitesCount);
+                    let sitesCount = projectsData[i].sites.length;
+                    let sites = projectsData[i].sites;
+                    console.log("sites",sites);
+                    let employeesCount = 0;
+                    for(let i=0;i<sites.length;i++){
+                        employeesCount = employeesCount+sites[i].Employees.length;
+                    }
                     tableBody.innerHTML+=`
                         <tr>
                             <td>${i+1}</td>
-                            <td>${projects[i].name}</td>
+                            <td>${projectsData[i].name}</td>
                             <td>${sitesCount}</td>
+                            <td>${employeesCount}</td>
+                            <td><button project-id=${projectsData[i]._id} class="getInfo">Get Info</button></td>
                         </tr>
                     `;
                 }
+                let projectInfo = document.querySelectorAll(".getInfo");
+                projectInfo.forEach(button =>{
+                    button.addEventListener("click",()=>{
+                        let projectId = button.getAttribute("project-id");
+                        window.location.href=`projectDetails.html?projectId=${projectId}`;
+                    })
+                });
             }
             else {
                 projectBody.innerHTML = `<h1 align="center">404 Data not found</h1>`;
