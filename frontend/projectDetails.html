@@ -10,98 +10,65 @@
     <link rel="icon" type="img/png" href="images/fevicon.png">
 </head>
 
-<body>
-    <div class="container">
-        <div class="sidebarFixed">
-            <div class="logoBox">
-                <div class="logoIcon"></div> Attendee
-            </div>
-            <nav class="navMenu">
-                <a href="adminDashBoard.html">Dashboard</a>
-                <a href="siteLeads.html">Site Leads</a>
-                <a href="workers.html">Workers</a>
-                <a href="projects.html">Projects</a>
-            </nav>
-        </div>
-        <main class="mainContent">
-            <header class="topBar">
-                <a class="noStyle back" href="projects.html"><i class="fa-solid fa-arrow-left"></i></a>
-                <div class="profileIcon">👤</div>
-            </header>
-
-            <div class="projectDetailsMain">
-                <section class="dashboardContent">
-                    <div id="projectInfo"></div>
-                </section>
-                <div id="chart" class="chartBox hidden">
-                    <br>
-                    <canvas id="attendanceChart" width="10" height="10"></canvas>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <footer>
-        <p>&copy; 2025 Attendance Maintenance System</p>
-    </footer>
+<body id="admin-body">
+    <h1 id="load" align="center">Please Wait! Site is loading...</h1>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const projects = {
-        1: { name: "Metro Expansion", description: "This project is about the expansion of metro services for more cities", number_of_sites: 1, number_of_workers: 2, siteName: "SL-102", siteLeadName: "Ram" },
-        2: { name: "Bridge Renovation", description: "Renovating the old bridges for people safety because old bridges may fall anytime", number_of_sites: 1, number_of_workers: 1, siteName: "SL-204", siteLeadName: "Shyam" },
-        3: { name: "Highway Work", description: "Building Highway to get few more routes and reduce traffic", number_of_sites: 1, number_of_workers: 1, siteName: "SL-317", siteLeadName: "Sai", workerName: "Akash" }
-    };
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const projectId = urlParams.get('projectId');
-
-    const project = projects[projectId];
-    const infoDiv = document.getElementById("projectInfo");
-
-    if (project) {
-        infoDiv.innerHTML = `
-        <h2>${project.name} Details</h2>
-        <p><strong>Name:</strong> ${project.name}</p>
-        <p><strong>Description:</strong> ${project.description}</p>
-        <p><strong>No of Sites:</strong> ${project.number_of_sites}</p>
-        <p><strong>Site 1 Details:</strong></p>
-        <p><strong>Site Name:</strong>${project.siteName}</p>
-        <p><strong>Site Lead Name:</strong>${project.siteLeadName}</p>
-        <p><strong>number of Workers under Site: </strong>${project.number_of_workers}</p>
-        <p><strong>Worker 1 Name :</strong>${project.workerName} <button id="getAttendance" class="getInfo">view Attendance</button></p>
-        
-      `;
-
-    } else {
-        infoDiv.innerHTML = `<p>Project not found.</p>`;
-    }
-    let attendance = document.getElementById("getAttendance");
-    attendance.addEventListener("click", () => {
-        let pieChartBox = document.getElementById("chart");
-        pieChartBox.classList.remove("hidden");
-        const ctx = document.getElementById('attendanceChart').getContext('2d');
-        const attendanceChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['Present Days', 'Absent Days'],
-                datasets: [{
-                    data: [22, 8], // Default values: 22 present, 8 absent (out of 30)
-                    backgroundColor: ['#4caf50', '#f44336'],
-                    borderColor: '#fff',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
+    let body = document.getElementById("admin-body");
+    const params = new URLSearchParams(window.location.search);
+    const adminId = params.get("adminId");
+    const projectId = params.get("projectId");
+    const load = document.getElementById("load");
+    window.addEventListener("DOMContentLoaded", async function () {
+        try {
+            let adminResponse = await fetch(`http://localhost:5000/api/auth/admin/${adminId}`);
+            let projectResponse = await fetch(`http://localhost:5000/api/admins/project/${projectId}`);
+            if(adminResponse.ok && projectResponse.ok){
+                let adminResult = await adminResponse.json();
+                let projectResult = await projectResponse.json();
+                body.innerHTML=`
+                    <div class="container">
+                        <div class="sidebarFixed">
+                            <div class="logoBox">
+                                <div class="logoIcon"></div> Attendee
+                            </div>
+                            <nav class="navMenu">
+                                <a href="adminDashBoard.html?adminId=${adminResult._id}" >Dashboard</a>
+                                <a href="siteLeads.html?adminId=${adminResult._id}">Site Leads</a>
+                                <a href="workers.html?adminId=${adminResult._id}">Workers</a>
+                                <a href="projects.html?adminId=${adminResult._id}" class="active">Projects</a>
+                            </nav>
+                        </div>
+                        <main class="mainContent">
+                            <header class="topBar">
+                                <a class="noStyle back" href="projects.html?adminId=${adminResult._id}"><i class="fa-solid fa-arrow-left"></i></a>
+                                <div class="profileIcon">👤</div>
+                            </header>
+                            <div class="hidden" id="logout">Logout</div>
+                            <div class="projectDetailsMain">
+                                <section class="dashboardContent">
+                                    <div id="projectInfo"></div>
+                                </section>
+                                <div id="chart" class="chartBox hidden">
+                                    <br>
+                                    <canvas id="attendanceChart" width="10" height="10"></canvas>
+                                </div>
+                            </div>
+                        </main>
+                    </div>
+                    <footer>
+                        <p>&copy; 2025 Attendance Maintenance System</p>
+                    </footer>
+                `;
             }
-        });
-
+            else{
+                load.innerText="404 Cannot load Data";
+            }
+        }
+        catch (error) {
+            load.innerText = "500 Server Not Found";
+        }
     })
 
 </script>

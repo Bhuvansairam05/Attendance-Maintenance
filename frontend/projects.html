@@ -21,9 +21,8 @@
         try {
             const projectsResponse = await fetch("http://localhost:5000/api/admins/projects");
             const adminResponse = await fetch(`http://localhost:5000/api/auth/admin/${adminId}`);
+            let adminResult = await adminResponse.json();
             if (adminResponse.ok) {
-                
-                let adminResult = await adminResponse.json();
                 
                 console.log("admin",adminResult);
                 projectBody.innerHTML = `
@@ -126,6 +125,7 @@
                 });
             }
             if(adminResponse.ok && projectsResponse.ok){
+                // let admin = await adminResponse.json();
                 let projects = await projectsResponse.json();
                 console.log("projects",projects.projects);
                 let projectsData = projects.projects;
@@ -154,7 +154,7 @@
                 projectInfo.forEach(button =>{
                     button.addEventListener("click",()=>{
                         let projectId = button.getAttribute("project-id");
-                        window.location.href=`projectDetails.html?projectId=${projectId}`;
+                        window.location.href=`projectDetails.html?projectId=${projectId}&adminId=${adminResult._id}`;
                     })
                 });
             }
