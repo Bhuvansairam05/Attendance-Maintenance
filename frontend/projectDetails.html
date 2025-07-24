@@ -44,7 +44,7 @@
                         <main class="mainContent">
                             <header class="topBar">
                                 <a class="noStyle back" href="projects.html?adminId=${adminResult._id}"><i class="fa-solid fa-arrow-left"></i></a>
-                                <div class="profileIcon">👤</div>
+                                <div id="profile" class="profileIcon">👤</div>
                             </header>
                             <div class="hidden" id="logout">Logout</div>
                             <div class="projectDetailsMain">
@@ -67,19 +67,45 @@
                         <p>&copy; 2025 Attendance Maintenance System</p>
                     </footer>
                 `;
-            }
-            else if(adminResponse.ok && projectResponse.ok){
-                let projectResult = await projectResponse.json();
                 let sites = document.getElementById("sites-data");
                 sites.innerHTML="";
                 let sitesInfo = projectResult.sites;
+                console.log("sites", sitesInfo);
                 console.log("sites",sitesInfo);
                 for(let i=0;i<sitesInfo.length;i++){
-                    sites  +=`
-                        <h3>Site Number: ${sitesInfo[i].siteNumber}</h3>
-                        <h3>SiteLead Name: ${sitesInfo[i].siteLeadName}</h3>
+                    sites.innerHTML  +=`
+                        <h2>Site Number: ${sitesInfo[i].siteNumber}</h2>
+                        <p style="font-size:20px">SiteLead Name: ${sitesInfo[i].siteLeadName}</p>
+                        <div id="employees"></div>
                     `;
+                    let employees=sitesInfo[i].workers;
+                    console.log(employees);
+                    let employeeDetails = document.getElementById("employees");
+                    employeeDetails.innerHTML="<h3>Employees:</h3>";
+                    for(let i=0;i<employees.length;i++){
+                        employeeDetails.innerHTML+=`
+                            <p style="font-size:20px">${i+1}. ${employees[i].name} Present Days: ${employees[i].presentDays}</p>
+                        `;
+                    }
                 }
+                let profile = document.getElementById("profile");
+                let logout = document.getElementById("logout");
+                profile.addEventListener("click", () => {
+                    if (logout.classList.contains("hidden")) {
+                        logout.classList.remove("hidden");
+                        logout.addEventListener("click", () => {
+                            if (confirm("Are you sure you want to LogOut?")) {
+                                window.location.href = "login.html";
+                            }
+                            else {
+                                logout.classList.add("hidden");
+                            }
+                        });
+                        logout.classList.remove("hidden");
+                    } else {
+                        logout.classList.add("hidden");
+                    }
+                });
             }
             else{
                 load.innerText="404 Cannot load Data";

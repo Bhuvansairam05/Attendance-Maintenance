@@ -125,7 +125,6 @@
                 });
             }
             if(adminResponse.ok && projectsResponse.ok){
-                // let admin = await adminResponse.json();
                 let projects = await projectsResponse.json();
                 console.log("projects",projects.projects);
                 let projectsData = projects.projects;
