@@ -75,7 +75,7 @@ exports.createSite = async(req,res)=>{
     const newSite = new Site({
       siteName,
       siteLeadID,
-      workers:workerIDs,
+      Employees:workerIDs,
       siteLeadName: siteleadname
     });
     const savedSite = await newSite.save();
@@ -108,24 +108,26 @@ exports.createProject = async (req, res) => {
 
     for (const site of sites) {
       const siteId = site;
-      const siteData = Site.findById("siteId");
+      const siteData =await Site.findById(siteId);
       await Site.updateOne(
-        {_id: {$in:siteId}},
+        {_id: siteId},
         {
           $set:{
             projectName:projectName
           }
         }
       )
-      const savedSite = await newSite.save();
-      createdSites.push(savedSite._id);
+      const workerIDs = siteData.Employees;
+      const siteLeadName = siteData.siteLeadName;
+      const siteLeadID = siteData.siteLeadID;
+      createdSites.push(siteId);
       await Employee.updateMany(
         { _id: { $in: workerIDs } },
         {
           $set: {
             inProject: true,
             workingProject: projectName,
-            workingSite: siteName,
+            workingSite: siteData.siteName,
             siteLeadName:siteLeadName
           }
         }
@@ -136,14 +138,14 @@ exports.createProject = async (req, res) => {
           $set: {
             inProject: true,
             workingProject: projectName,
-            workingSite: siteName
+            workingSite: siteData.siteName
           }
         }
       );
     }
     const newProject = new Project({
-      projectName,
-      projectDescription,
+      name:projectName,
+      description:projectDescription,
       startDate,
       sites: createdSites,
     });
