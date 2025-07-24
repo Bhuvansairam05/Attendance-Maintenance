@@ -154,10 +154,9 @@ exports.getProjectDetails = async (req, res) => {
       return res.status(404).json({ message: "Project not found" });
     }
 
-    // Create a structured response similar to the image
     const projectDetails = {
-      name: project?.projectName,
-      description: project?.projectDescription,
+      name: project?.name,
+      description: project?.description,
       numberOfSites: project.sites?.length,
       sites: project?.sites.map((site, index) => ({
         siteNumber: index + 1,
@@ -166,6 +165,7 @@ exports.getProjectDetails = async (req, res) => {
         workers: site.Employees?.map((worker, idx) => ({
           workerNumber: idx + 1,
           name: worker.name,
+          presentDays: worker.workingDays
         })),
       })),
     };

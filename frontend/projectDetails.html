@@ -27,6 +27,7 @@
             if(adminResponse.ok && projectResponse.ok){
                 let adminResult = await adminResponse.json();
                 let projectResult = await projectResponse.json();
+                console.log(projectResult);
                 body.innerHTML=`
                     <div class="container">
                         <div class="sidebarFixed">
@@ -48,7 +49,12 @@
                             <div class="hidden" id="logout">Logout</div>
                             <div class="projectDetailsMain">
                                 <section class="dashboardContent">
-                                    <div id="projectInfo"></div>
+                                    <div id="projectInfo">
+                                        <h1>Project Name ${projectResult.name}</h1>
+                                        <h2>Description: ${projectResult.description}</h2>
+                                        <h2>Number of Sites: ${projectResult.numberOfSites}</h2>
+                                        <div id="sites-data"></div>
+                                    </div>
                                 </section>
                                 <div id="chart" class="chartBox hidden">
                                     <br>
@@ -61,6 +67,19 @@
                         <p>&copy; 2025 Attendance Maintenance System</p>
                     </footer>
                 `;
+            }
+            else if(adminResponse.ok && projectResponse.ok){
+                let projectResult = await projectResponse.json();
+                let sites = document.getElementById("sites-data");
+                sites.innerHTML="";
+                let sitesInfo = projectResult.sites;
+                console.log("sites",sitesInfo);
+                for(let i=0;i<sitesInfo.length;i++){
+                    sites  +=`
+                        <h3>Site Number: ${sitesInfo[i].siteNumber}</h3>
+                        <h3>SiteLead Name: ${sitesInfo[i].siteLeadName}</h3>
+                    `;
+                }
             }
             else{
                 load.innerText="404 Cannot load Data";
