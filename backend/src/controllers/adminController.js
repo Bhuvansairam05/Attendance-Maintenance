@@ -70,7 +70,7 @@ exports.getAllSiteLeads = async (req, res) => {
 exports.createSite = async(req,res)=>{
   try{
     const{siteName, siteLeadID, workerIDs} = req.body;
-    const siteLeadName = SiteLead.findById(siteLeadID);
+    const siteLeadName = await SiteLead.findById(siteLeadID);
     const siteleadname = siteLeadName.name;
     const newSite = new Site({
       siteName,
@@ -78,8 +78,20 @@ exports.createSite = async(req,res)=>{
       Employees:workerIDs,
       siteLeadName: siteleadname
     });
+    await SiteLead.updateOne(
+      {_id:siteLeadID},
+      {
+        inProject:true
+      }
+    )
+    await Employee.updateOne(
+      {_id: {$in:workerIDs}},
+      {
+        inProject:true
+      }
+    )
     const savedSite = await newSite.save();
-    return res.status(201).json({message:"Site Created successfully",data:savedSite._id});
+    return res.status(201).json(savedSite);
   }
   catch(error){
     return res.status(500).json({error:"500 Server not found"});
@@ -91,10 +103,30 @@ exports.deleteSite = async(req,res)=>{
     if(!siteId){
       return res.status(400).json({error:"SiteId required"});
     }
-    const deleteSite = await Site.findByIdAndDelete(siteId);
-    if(!deleteSite){
-      return res.status(404).json({error:"Site not"});
+    const site = Site.findById(siteId);
+    if(!site){
+      return res.status(404).json({error:"Site not Found"});
     }
+    const siteleadId = site.siteleadID;
+    const employees = site.Employees;
+    
+    await SiteLead.updateMany(
+      {_id: siteleadId},
+      {
+        inProject:false,
+        workingProject:"",
+        workingSite:""
+      }
+    )
+    await Employee.updateMany(
+      {_id:{$in:employees}},
+      {
+        inProject:false,
+        workingProject:"",
+        workingSite:""
+      }
+    )
+    const deleteSite = await Site.findByIdAndDelete(siteId);
     return res.status(200).json({message:"Site is deleted"});
   }
   catch(error){
@@ -125,7 +157,6 @@ exports.createProject = async (req, res) => {
         { _id: { $in: workerIDs } },
         {
           $set: {
-            inProject: true,
             workingProject: projectName,
             workingSite: siteData.siteName,
             siteLeadName:siteLeadName
@@ -136,7 +167,6 @@ exports.createProject = async (req, res) => {
         { _id: siteLeadID},
         {
           $set: {
-            inProject: true,
             workingProject: projectName,
             workingSite: siteData.siteName
           }

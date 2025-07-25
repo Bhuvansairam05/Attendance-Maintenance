@@ -33,6 +33,10 @@ login.addEventListener("submit", async function (e) {
           window.open(`workerDashboard.html?employeeId=${data?.user[0]?._id}`, "_blank");
         }
       }
+      else{
+        warning.classList.remove("hidden");
+  warning.innerText = data?.message || "Invalid username, role, or password.";
+      }
     }
     catch {
       alert("500 Server not found");

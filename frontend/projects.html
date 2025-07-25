@@ -23,8 +23,8 @@
             const adminResponse = await fetch(`http://localhost:5000/api/auth/admin/${adminId}`);
             let adminResult = await adminResponse.json();
             if (adminResponse.ok) {
-                
-                console.log("admin",adminResult);
+
+                console.log("admin", adminResult);
                 projectBody.innerHTML = `
                     <div class="container">
                         <aside class="sidebarFixed">
@@ -56,22 +56,20 @@
                                         <label for="startDate">Start Date: </label>
                                         <input type="date" id="startDate">
                                         <div id="sitesList"></div>
-                                        <label for="addSite">Add Site</label>
-                                        <button id="addSite">+</button>
-                                        <form action="submit" id="addSiteForm" class="addProjectForm hidden">
+                                        <div id="addSiteForm" class="addProjectForm hidden">
                                             <label for="SiteName">SiteName:</label>
                                             <input type="text" id="SiteName">
                                             <label for="siteLeadOption">Select Site Lead</label>
                                             <select name="siteLead" id="siteLeadOption">
                                             </select>
                                             <label for="workerOption">Add Workers</label>
-                                            <select name="workers" id="workerOption">
-                                                <option value="" selected>select</option>
-                                                <option value="raghu">Raghu</option>
+                                            <select name="workers" id="workerOption" multiple size="1">
                                             </select>
                                             <button id="add">Add Site</button>
-                                        </form>
-                                        <button>Add Project</button>
+                                        </div>
+                                        <label for="addSite">Add Site</label>
+                                        <button id="addSite">+</button>
+                                        <button id="addProjectData">Add Project</button>
                                     </div>
                                 </div>
                             </section><br><br>
@@ -94,7 +92,7 @@
                         <p>&copy; 2025 Attendance Maintenance System</p>
                     </footer>
                 `;
-                
+
                 let profile = document.getElementById("profile");
                 let logout = document.getElementById("logout");
                 profile.addEventListener("click", () => {
@@ -113,35 +111,182 @@
                         logout.classList.add("hidden");
                     }
                 });
+
                 let project = document.getElementById("addProjectBtn")
                 let projectForm = document.getElementById("addProjectForm");
+                let addedProject = document.getElementById("addProjectData");
                 let site = document.getElementById("addSite");
                 let siteForm = document.getElementById("addSiteForm");
                 project.addEventListener("click", () => {
                     projectForm.classList.remove("hidden");
                 });
-                site.addEventListener("click", () => {
+                site.addEventListener("click", async function () {
                     siteForm.classList.remove("hidden");
+                    let siteleadoptions = document.getElementById("siteLeadOption");
+                    let employeeoptions = document.getElementById("workerOption");
+                    try {
+                        const sitesList = document.getElementById("sitesList");
+                        sitesList.innerHTML="";
+                        const siteleadsResponse = await fetch("http://localhost:5000/api/admins/unassigned-siteLeads");
+                        const employeesResponse = await fetch("http://localhost:5000/api/admins/unassigned-employees");
+
+                        if (!siteleadsResponse.ok || !employeesResponse.ok) {
+                            alert("Add SiteLeads and employees before adding project");
+                            siteForm.classList.add("hidden");
+                            projectForm.classList.add("hidden");
+                            return;
+                        }
+                        siteleadoptions.innerHTML = "<option value='' selected>Select</option>";
+                        employeeoptions.innerHTML = "<option value='' selected>Select one or more workers</option>";
+                        const siteleadsResult = await siteleadsResponse.json();
+                        const employeesResult = await employeesResponse.json();
+                        const siteleadsList = siteleadsResult.data;
+                        const employeesList = employeesResult.data;
+                        console.log(siteleadsList);
+                        for (let i = 0; i < siteleadsList.length; i++) {
+                            siteleadoptions.innerHTML += `
+                                <option value=${siteleadsList[i]._id}>
+                                ${siteleadsList[i].name}
+                                </option>
+                            `;
+                        }
+                        for (let i = 0; i < employeesList.length; i++) {
+                            employeeoptions.innerHTML += `
+                            <option value=${employeesList[i]._id}>${i+1} ${employeesList[i].name}</option>
+                            `;
+                        }
+                    const addSite = document.getElementById("add");
+                    addSite.addEventListener("click",async function(){
+                        const sitename = document.getElementById("SiteName");
+                        const siteLead = siteleadoptions.value;
+                        const workers = document.getElementById("workerOption");
+                        const workerIDs = Array.from(workers.selectedOptions).map(option => option.value);
+                        if(!sitename || !siteLead || !workerIDs){
+                            alert("Plese enter all the details to create site");
+                            return;
+                        }
+                        const siteData = {
+                            siteName:sitename.value,
+                            siteLeadID:siteLead,
+                            workerIDs
+                        }
+                        try{
+                            const createSite = await fetch("http://localhost:5000/api/admins/create-site/",{
+                                method:"POST",
+                                headers: {
+                                    "Content-Type":"application/json"
+                                },
+                                body:JSON.stringify(siteData)
+                            })
+                            if(!createSite.ok){
+                                alert("Error While Creating Site");
+                                return;
+                            }
+                            alert("Created Site Successfully");
+                            const result = await createSite.json();
+                            sitesList.innerHTML+=`
+                                <div class="addedSite" data-id="${result._id}"><h5>${result.siteName} <h5><button class="delete-site" data-id=${result._id}>X</button></div>
+                            `;
+                            siteForm.classList.add("hidden");
+                        }
+                        catch{
+                            alert("Error While Creating Site");
+                        }
+                    })
+                    }
+                    
+                    catch (error) {
+                        siteleadoptions.innerHTML = `<option>500 Server Not Found</option>`;
+                        employeeoptions.innerHTML = `<option>500 Server Not Found</option>`;
+                    }
                 });
+                addedProject.addEventListener("click",async function(){
+                    try{
+                        const projectName = document.getElementById("projectName").value;
+                        const projectDescription = document.getElementById("projectDescription").value;
+                        const startdate = document.getElementById("startDate").value;
+                        const siteList = document.querySelectorAll(".addedSite");
+                        const sites=[];
+                        siteList.forEach(site=>{
+                            sites.push(site.getAttribute("data-id"));
+                        })
+                        if(!projectName|| !projectDescription || !startdate || sites.length===0){
+                            alert("Enter all details to create project");
+                            return;
+                        }
+                        const projectData = {
+                            projectName,
+                            projectDescription,
+                            startDate:startdate,
+                            sites
+                        }
+                        const res = await fetch("http://localhost:5000/api/admins/create-project/",{
+                            method:"POST",
+                            headers:{
+                                "Content-Type":"application/json"
+                            },
+                            body:JSON.stringify(projectData)
+                        });
+                        if(res.ok){
+                            alert("Project Created Successfully");
+                            projectForm.classList.add("hidden");
+                        }
+                        else{
+                            alert("Error While Creating Project");
+                             projectForm.classList.add("hidden");
+                        }
+                    }
+                    catch{
+                        alert("500 Server not found");
+                         projectForm.classList.add("hidden");
+                        return;
+                    }
+                })
+                const deleteSite = document.querySelectorAll(".delete-site");
+                deleteSite.forEach(site=>{
+                    site.addEventListener("click",async function(){
+                        try{
+                            const siteId = this.getAttribute("data-id");
+                            const data = {
+                                siteId
+                            }
+                            const deleteRes = await fetch("",{
+                                method:"DELETE",
+                                headers:{
+                                    "Content-Type":"application/json"
+                                },
+                                body:JSON.stringify(data)
+                            })
+                            if(deleteRes.ok){
+                                alert("Deleted Site");
+                                this.closest(".addedSite").remove();
+                            }
+                        }
+                        catch{
+                            alert("500 Server not found");
+                            return;
+                        }
+                    })
+                })
             }
-            if(adminResponse.ok && projectsResponse.ok){
+            if (adminResponse.ok && projectsResponse.ok) {
                 let projects = await projectsResponse.json();
-                console.log("projects",projects.projects);
+                console.log("projects", projects.projects);
                 let projectsData = projects.projects;
                 let tableBody = document.getElementById("table-body");
-                tableBody.innerHTML="";
-                for(let i=0;i<projectsData.length;i++){
+                tableBody.innerHTML = "";
+                for (let i = 0; i < projectsData.length; i++) {
                     console.log('inloop');
                     let sitesCount = projectsData[i].sites.length;
                     let sites = projectsData[i].sites;
-                    console.log("sites",sites);
+                    console.log("sites", sites);
                     let employeesCount = 0;
-                    for(let i=0;i<sites.length;i++){
-                        employeesCount = employeesCount+sites[i].Employees.length;
+                    for (let i = 0; i < sites.length; i++) {
+                        employeesCount = employeesCount + sites[i].Employees.length;
                     }
-                    tableBody.innerHTML+=`
+                    tableBody.innerHTML += `
                         <tr>
-                            <td>${i+1}</td>
+                            <td>${i + 1}</td>
                             <td>${projectsData[i].name}</td>
                             <td>${sitesCount}</td>
                             <td>${employeesCount}</td>
@@ -150,12 +295,13 @@
                     `;
                 }
                 let projectInfo = document.querySelectorAll(".getInfo");
-                projectInfo.forEach(button =>{
-                    button.addEventListener("click",()=>{
+                projectInfo.forEach(button => {
+                    button.addEventListener("click", () => {
                         let projectId = button.getAttribute("project-id");
-                        window.location.href=`projectDetails.html?projectId=${projectId}&adminId=${adminResult._id}`;
+                        window.location.href = `projectDetails.html?projectId=${projectId}&adminId=${adminResult._id}`;
                     })
                 });
+
             }
             else {
                 projectBody.innerHTML = `<h1 align="center">404 Data not found</h1>`;
