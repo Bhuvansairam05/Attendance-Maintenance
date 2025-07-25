@@ -126,7 +126,7 @@
                     let employeeoptions = document.getElementById("workerOption");
                     try {
                         const sitesList = document.getElementById("sitesList");
-                        sitesList.innerHTML="";
+                        sitesList.innerHTML = "";
                         const siteleadsResponse = await fetch("http://localhost:5000/api/admins/unassigned-siteLeads");
                         const employeesResponse = await fetch("http://localhost:5000/api/admins/unassigned-employees");
 
@@ -152,122 +152,124 @@
                         }
                         for (let i = 0; i < employeesList.length; i++) {
                             employeeoptions.innerHTML += `
-                            <option value=${employeesList[i]._id}>${i+1} ${employeesList[i].name}</option>
+                            <option value=${employeesList[i]._id}>${i + 1} ${employeesList[i].name}</option>
                             `;
                         }
-                    const addSite = document.getElementById("add");
-                    addSite.addEventListener("click",async function(){
-                        const sitename = document.getElementById("SiteName");
-                        const siteLead = siteleadoptions.value;
-                        const workers = document.getElementById("workerOption");
-                        const workerIDs = Array.from(workers.selectedOptions).map(option => option.value);
-                        if(!sitename || !siteLead || !workerIDs){
-                            alert("Plese enter all the details to create site");
-                            return;
-                        }
-                        const siteData = {
-                            siteName:sitename.value,
-                            siteLeadID:siteLead,
-                            workerIDs
-                        }
-                        try{
-                            const createSite = await fetch("http://localhost:5000/api/admins/create-site/",{
-                                method:"POST",
-                                headers: {
-                                    "Content-Type":"application/json"
-                                },
-                                body:JSON.stringify(siteData)
-                            })
-                            if(!createSite.ok){
-                                alert("Error While Creating Site");
+                        const addSite = document.getElementById("add");
+                        addSite.addEventListener("click", async function () {
+                            const sitename = document.getElementById("SiteName");
+                            const siteLead = siteleadoptions.value;
+                            const workers = document.getElementById("workerOption");
+                            const workerIDs = Array.from(workers.selectedOptions).map(option => option.value);
+                            if (!sitename || !siteLead || !workerIDs) {
+                                alert("Plese enter all the details to create site");
                                 return;
                             }
-                            alert("Created Site Successfully");
-                            const result = await createSite.json();
-                            sitesList.innerHTML+=`
+                            const siteData = {
+                                siteName: sitename.value,
+                                siteLeadID: siteLead,
+                                workerIDs
+                            }
+                            try {
+                                const createSite = await fetch("http://localhost:5000/api/admins/create-site/", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify(siteData)
+                                })
+                                if (!createSite.ok) {
+                                    alert("Error While Creating Site");
+                                    return;
+                                }
+                                alert("Created Site Successfully");
+                                const result = await createSite.json();
+                                sitesList.innerHTML += `
                                 <div class="addedSite" data-id="${result._id}"><h5>${result.siteName} <h5><button class="delete-site" data-id=${result._id}>X</button></div>
                             `;
-                            siteForm.classList.add("hidden");
-                        }
-                        catch{
-                            alert("Error While Creating Site");
-                        }
-                    })
+                                siteForm.classList.add("hidden");
+                            }
+                            catch {
+                                alert("Error While Creating Site");
+                            }
+                        })
                     }
-                    
+
                     catch (error) {
                         siteleadoptions.innerHTML = `<option>500 Server Not Found</option>`;
                         employeeoptions.innerHTML = `<option>500 Server Not Found</option>`;
                     }
                 });
-                addedProject.addEventListener("click",async function(){
-                    try{
+                addedProject.addEventListener("click", async function () {
+                    try {
                         const projectName = document.getElementById("projectName").value;
                         const projectDescription = document.getElementById("projectDescription").value;
                         const startdate = document.getElementById("startDate").value;
                         const siteList = document.querySelectorAll(".addedSite");
-                        const sites=[];
-                        siteList.forEach(site=>{
+                        const sites = [];
+                        siteList.forEach(site => {
                             sites.push(site.getAttribute("data-id"));
                         })
-                        if(!projectName|| !projectDescription || !startdate || sites.length===0){
+                        if (!projectName || !projectDescription || !startdate || sites.length === 0) {
                             alert("Enter all details to create project");
                             return;
                         }
                         const projectData = {
                             projectName,
                             projectDescription,
-                            startDate:startdate,
+                            startDate: startdate,
                             sites
                         }
-                        const res = await fetch("http://localhost:5000/api/admins/create-project/",{
-                            method:"POST",
-                            headers:{
-                                "Content-Type":"application/json"
+                        const res = await fetch("http://localhost:5000/api/admins/create-project/", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
                             },
-                            body:JSON.stringify(projectData)
+                            body: JSON.stringify(projectData)
                         });
-                        if(res.ok){
+                        if (res.ok) {
                             alert("Project Created Successfully");
                             projectForm.classList.add("hidden");
                         }
-                        else{
+                        else {
                             alert("Error While Creating Project");
-                             projectForm.classList.add("hidden");
+                            projectForm.classList.add("hidden");
                         }
                     }
-                    catch{
+                    catch {
                         alert("500 Server not found");
-                         projectForm.classList.add("hidden");
+                        projectForm.classList.add("hidden");
                         return;
                     }
                 })
                 const deleteSite = document.querySelectorAll(".delete-site");
-                deleteSite.forEach(site=>{
-                    site.addEventListener("click",async function(){
-                        try{
-                            const siteId = this.getAttribute("data-id");
-                            const data = {
-                                siteId
-                            }
-                            const deleteRes = await fetch("",{
-                                method:"DELETE",
-                                headers:{
-                                    "Content-Type":"application/json"
+                document.getElementById("sitesList").addEventListener("click", async function (e) {
+                    if (e.target.classList.contains("delete-site")) {
+                        const siteId = e.target.getAttribute("data-id");
+                        try {
+                            const deleteRes = await fetch("http://localhost:5000/api/admins/delete-site/", {
+                                method: "DELETE",
+                                headers: {
+                                    "Content-Type": "application/json"
                                 },
-                                body:JSON.stringify(data)
-                            })
-                            if(deleteRes.ok){
-                                alert("Deleted Site");
-                                this.closest(".addedSite").remove();
+                                body: JSON.stringify({ siteId })
+                            });
+
+                            const result = await deleteRes.json();
+
+                            if (deleteRes.ok) {
+                                alert(result.message || "Deleted Site");
+                                e.target.closest(".addedSite").remove();
+                            } else {
+                                alert(result.error || "Error deleting site");
                             }
-                        }
-                        catch{
+
+                        } catch (err) {
+                            console.error(err);
                             alert("500 Server not found");
-                            return;
                         }
-                    })
-                })
+                    }
+                });
             }
             if (adminResponse.ok && projectsResponse.ok) {
                 let projects = await projectsResponse.json();

@@ -107,7 +107,7 @@ exports.deleteSite = async(req,res)=>{
     if(!site){
       return res.status(404).json({error:"Site not Found"});
     }
-    const siteleadId = site.siteleadID;
+    const siteleadId = site.siteLeadID;
     const employees = site.Employees;
     
     await SiteLead.updateMany(
