@@ -103,7 +103,7 @@ exports.deleteSite = async(req,res)=>{
     if(!siteId){
       return res.status(400).json({error:"SiteId required"});
     }
-    const site = Site.findById(siteId);
+    const site = await Site.findById(siteId);
     if(!site){
       return res.status(404).json({error:"Site not Found"});
     }
