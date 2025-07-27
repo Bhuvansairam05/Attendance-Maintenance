@@ -415,7 +415,7 @@ canvas#attendanceChart {
 .addedSite{
     display: flex;
     align-items: center;
-    gap:5px;
+    gap:10px;
 }
 .delete-site{
     font-size:8px;
