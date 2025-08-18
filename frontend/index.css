@@ -2,10 +2,6 @@
     padding: 0px;
     margin: 0px;
 }
-
-html {
-    height: 100%;
-}
 .more{
     color: rgb(0, 183, 255);
     display: flex;
@@ -25,7 +21,6 @@ html {
 }
 
 body {
-    height: 100%;
     width: 100%;
     overflow-x: hidden;
     display: flex;
@@ -156,7 +151,7 @@ input {
 main {
     flex: 1;
     height: auto;
-    margin: 20px;
+    padding: 20px;
 }
 
 .main_content {
@@ -865,7 +860,6 @@ footer {
     position: fixed;
     bottom: 0px;
 }
-
 @media screen and (max-width:767px) {
     header {
         display: flex;
