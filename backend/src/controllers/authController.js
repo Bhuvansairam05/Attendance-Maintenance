@@ -9,30 +9,30 @@ const loginUser = (req, res) => {
   }
   if(role ==="admin"){
     Admin.find({username,password}).then(user => {
-      if(user){
+      if(user.length>0){
         res.json({ success: true, user });
       } else {
-        res.status(401).json({ success: false, message: "Invalid credentials" });
+        res.status(200).json({ success: false, message: "Invalid credentials" });
       }
-    });
+    }).catch(err=>{res.status(500).json({message:"server error"})});
   }
   else if(role ==="siteLead"){
     SiteLead.find({username,password}).then(user => {
-      if(user){
+      if(user.length>0){
         res.json({ success: true, user });
       } else {
         res.status(401).json({ success: false, message: "Invalid credentials" });
       }
-    }).catch();
+    }).catch(err=>{res.status(500).json({message:"server error"})});
   }
   else if(role ==="employee"){
     Employee.find({username,password}).then(user => {
-      if(user){
+      if(user.length>0){
         res.json({ success: true, user });
       } else {
         res.status(401).json({ success: false, message: "Invalid credentials" });
       }
-    });
+    }).catch(err=>{res.status(500).json({message:"server error"})});
   }
   else{
     return res.status(400).json({success:false,message:"Invalid role"});
