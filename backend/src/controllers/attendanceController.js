@@ -37,7 +37,7 @@ exports.checkOut = async (req, res) => {
         const date = new Date();
         const dateStr = date.toISOString().split('T')[0];
         const existing = await Attendance.findOne({ employeeId, date: dateStr });
-        console.log(existing);
+        // console.log(existing);
         if (!existing) {
             return res.status(400).json({ error: "First CheckIn before Checkout" });
         }
@@ -164,19 +164,3 @@ exports.rejectAttendance = async (req, res) => {
         return res.status(500).json({ error: "server not found" });
     }
 }
-// exports.getAttendance = async (req, res) => {
-//     try {
-//         const employeeId = req.params.employeeId;
-
-//         const response = await Attendance.findOne({ employeeId: employeeId });
-
-//         if (!response) {
-//             return res.status(404).json({ error: "No data found" });
-//         }
-
-//         return res.status(200).json({ message: "Successful", data: response });
-//     } catch (error) {
-//         console.error("Error fetching attendance:", error);
-//         return res.status(500).json({ error: "Server Error" });
-//     }
-// }

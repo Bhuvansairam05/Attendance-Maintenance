@@ -23,7 +23,7 @@ const loginUser = (req, res) => {
       } else {
         res.status(401).json({ success: false, message: "Invalid credentials" });
       }
-    });
+    }).catch();
   }
   else if(role ==="employee"){
     Employee.find({username,password}).then(user => {

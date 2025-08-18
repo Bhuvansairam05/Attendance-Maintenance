@@ -186,7 +186,7 @@ exports.createProject = async (req, res) => {
       .status(201)
       .json({ message: "Project created successfully", project: newProject });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(500).json({ error: "Error creating project" });
   }
 };
@@ -236,7 +236,7 @@ exports.getProjectDetails = async (req, res) => {
 
     res.status(200).json(projectDetails);
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(500).json({ error: "Error fetching project details" });
   }
 };

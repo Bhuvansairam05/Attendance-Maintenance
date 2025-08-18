@@ -23,6 +23,7 @@ login.addEventListener("submit", async function (e) {
       const data = await response.json();
       console.log(data?.user[0]?._id);
       if (response.ok) {
+        
         if (data?.user[0].role == "admin") {
           window.open(`adminDashboard.html?adminId=${data?.user[0]?._id}`,"_blank");
         }
@@ -33,7 +34,7 @@ login.addEventListener("submit", async function (e) {
           window.open(`workerDashboard.html?employeeId=${data?.user[0]?._id}`, "_blank");
         }
       }
-      else{
+      else if(response.status===401){
         warning.classList.remove("hidden");
   warning.innerText = data?.message || "Invalid username, role, or password.";
       }
