@@ -67,70 +67,74 @@ exports.getAllSiteLeads = async (req, res) => {
     res.status(500).json({ error: "Error fetching site leads" });
   }
 };
-exports.createSite = async(req,res)=>{
-  try{
-    const{siteName, siteLeadID, workerIDs} = req.body;
+exports.createSite = async (req, res) => {
+  try {
+    const { siteName, siteLeadID, workerIDs } = req.body;
     const siteLeadName = await SiteLead.findById(siteLeadID);
     const siteleadname = siteLeadName.name;
     const newSite = new Site({
       siteName,
       siteLeadID,
-      Employees:workerIDs,
+      Employees: workerIDs,
       siteLeadName: siteleadname
     });
     await SiteLead.updateOne(
-      {_id:siteLeadID},
+      { _id: siteLeadID },
       {
-        inProject:true
+        inProject: true
       }
     )
     await Employee.updateOne(
-      {_id: {$in:workerIDs}},
+      { _id: { $in: workerIDs } },
       {
-        inProject:true
+        inProject: true
       }
     )
     const savedSite = await newSite.save();
     return res.status(201).json(savedSite);
   }
-  catch(error){
-    return res.status(500).json({error:"500 Server not found"});
+  catch (error) {
+    return res.status(500).json({ error: "500 Server not found" });
   }
 }
-exports.deleteSite = async(req,res)=>{
-  try{
-    const {siteId} = req.body;
-    if(!siteId){
-      return res.status(400).json({error:"SiteId required"});
+exports.deleteSite = async (req, res) => {
+  try {
+    const { siteId } = req.body;
+    if (!siteId) {
+      return res.status(400).json({ error: "SiteId required" });
     }
     const site = await Site.findById(siteId);
-    if(!site){
-      return res.status(404).json({error:"Site not Found"});
+    if (!site) {
+      return res.status(404).json({ error: "Site not Found" });
     }
     const siteleadId = site.siteLeadID;
     const employees = site.Employees;
-    
+
     await SiteLead.updateMany(
-      {_id: siteleadId},
+      { _id: siteleadId },
       {
-        inProject:false,
-        workingProject:"",
-        workingSite:""
+        $set: {
+          inProject: false,
+          workingProject: "",
+          workingSite: ""
+        }
       }
     )
     await Employee.updateMany(
-      {_id:{$in:employees}},
+      { _id: { $in: employees } },
       {
-        inProject:false,
-        workingProject:"",
-        workingSite:""
+        $set: {
+          inProject: false,
+          workingProject: "",
+          workingSite: ""
+        }
       }
     )
     const deleteSite = await Site.findByIdAndDelete(siteId);
-    return res.status(200).json({message:"Site is deleted"});
+    return res.status(200).json({ message: "Site is deleted" });
   }
-  catch(error){
-    return res.status(500).json({error:"500 Server not found"});
+  catch (error) {
+    return res.status(500).json({ error: "500 Server not found" });
   }
 }
 exports.createProject = async (req, res) => {
@@ -140,12 +144,12 @@ exports.createProject = async (req, res) => {
 
     for (const site of sites) {
       const siteId = site;
-      const siteData =await Site.findById(siteId);
+      const siteData = await Site.findById(siteId);
       await Site.updateOne(
-        {_id: siteId},
+        { _id: siteId },
         {
-          $set:{
-            projectName:projectName
+          $set: {
+            projectName: projectName
           }
         }
       )
@@ -159,12 +163,12 @@ exports.createProject = async (req, res) => {
           $set: {
             workingProject: projectName,
             workingSite: siteData.siteName,
-            siteLeadName:siteLeadName
+            siteLeadName: siteLeadName
           }
         }
       );
       await SiteLead.updateMany(
-        { _id: siteLeadID},
+        { _id: siteLeadID },
         {
           $set: {
             workingProject: projectName,
@@ -174,8 +178,8 @@ exports.createProject = async (req, res) => {
       );
     }
     const newProject = new Project({
-      name:projectName,
-      description:projectDescription,
+      name: projectName,
+      description: projectDescription,
       startDate,
       sites: createdSites,
     });
@@ -241,28 +245,28 @@ exports.getProjectDetails = async (req, res) => {
   }
 };
 
-exports.getUnAssignedSiteLeads = async(req, res)=>{
-  try{
-    const siteleads = await SiteLead.find({"inProject":false});
-    if(siteleads){
-      return res.status(200).json({data:siteleads});
+exports.getUnAssignedSiteLeads = async (req, res) => {
+  try {
+    const siteleads = await SiteLead.find({ "inProject": false });
+    if (siteleads) {
+      return res.status(200).json({ data: siteleads });
     }
-    return res.status(404).json({error:"Add SiteLeads to involve into project"});
+    return res.status(404).json({ error: "Add SiteLeads to involve into project" });
   }
-  catch(error){
-    return res.status(500).json({error:"500 Server Not Found"});
+  catch (error) {
+    return res.status(500).json({ error: "500 Server Not Found" });
   }
 }
 
-exports.getUnAssignedEmployees = async(req,res)=>{
-  try{
-    const employees = await Employee.find({"inProject":false});
-    if(employees){
-      return res.status(200).json({data:employees});
+exports.getUnAssignedEmployees = async (req, res) => {
+  try {
+    const employees = await Employee.find({ "inProject": false });
+    if (employees) {
+      return res.status(200).json({ data: employees });
     }
-    return res.status(404).json({error:"404 First add Employees before creating project"})
+    return res.status(404).json({ error: "404 First add Employees before creating project" })
   }
-  catch(error){
-    return res.status(500).json({error:"500 Server Not Found"});
+  catch (error) {
+    return res.status(500).json({ error: "500 Server Not Found" });
   }
 }
