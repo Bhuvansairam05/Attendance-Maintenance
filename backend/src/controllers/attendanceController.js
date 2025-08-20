@@ -78,7 +78,7 @@ exports.approveAttendance = async (req, res) => {
         const date = now.toISOString().split('T')[0];
         const attendanceDetails = await Attendance.findOne({ employeeId: employeeId, date: date });
         if (!attendanceDetails) {
-            return res.status(404).json({ error: "record not found" });
+            return res.status(404).json({ error: "Record not found" });
         }
         if (attendanceDetails?.isApproved === true || attendanceDetails?.isRejected === true){
             return res.status(400).json({error:"Attendance is already updated"});
@@ -135,7 +135,9 @@ exports.approveAttendance = async (req, res) => {
 exports.rejectAttendance = async (req, res) => {
     const employeeId = req.params.employeeId;
     try {
-        const attendanceDetails = await Attendance.findOne({employeeId:employeeId});
+        const now = new Date();
+        const date = now.toISOString().split('T')[0];
+        const attendanceDetails = await Attendance.findOne({employeeId:employeeId,date:date});
         if(!attendanceDetails){
             return res.status(404).json({error:"Record not found"});
         }

@@ -181,7 +181,7 @@
                                 if (response.ok) {
                                     warningMessage.innerText = result.message;
                                 } else {
-                                    warningMessage.innerText = result.message;
+                                    warningMessage.innerText = result.error;
                                 }
                             } catch (error) {
                                 warningBox.classList.remove("hidden");

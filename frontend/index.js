@@ -20,10 +20,9 @@ login.addEventListener("submit", async function (e) {
         },
         body: JSON.stringify({ username, password, role })
       });
-      console.log(response);
-      if (response.success) {
-        const data = await response.json();
-        console.log(data?.user[0]?._id);
+      const data = await response.json();
+      if (data.success) {
+        
         if (data?.user[0].role == "admin") {
           window.open(`adminDashboard.html?adminId=${data?.user[0]?._id}`,"_blank");
         }

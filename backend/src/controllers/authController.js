@@ -12,7 +12,7 @@ const loginUser = (req, res) => {
       if(user.length>0){
         res.json({ success: true, user });
       } else {
-        res.status(200).json({ success: false, message: "Invalid credentials" });
+        res.status(401).json({ success: false, message: "Invalid credentials" });
       }
     }).catch(err=>{res.status(500).json({message:"server error"})});
   }
