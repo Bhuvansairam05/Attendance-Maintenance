@@ -22,6 +22,6 @@ mongoose
   })
   .then(() => {
     console.log(" Connected to MongoDB");
-    app.listen(5000, () => console.log(" Server running on port http://localhost:5000"));
+    app.listen(5000, () => console.log(" Server running on port https://attendance-maintenance.onrender.com"));
   })
   .catch((err) => console.error("MongoDB error:", err));
