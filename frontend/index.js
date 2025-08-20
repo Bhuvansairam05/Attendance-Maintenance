@@ -24,7 +24,7 @@ login.addEventListener("submit", async function (e) {
       if (data.success) {
         
         if (data?.user[0].role == "admin") {
-          window.open(`adminDashboard.html?adminId=${data?.user[0]?._id}`,"_blank");
+          window.open(`adminDashBoard.html?adminId=${data?.user[0]?._id}`,"_blank");
         }
         else if (data?.user[0].role == "siteLead") {
           window.open(`siteLeadDashBoard.html?siteLeadId=${data?.user[0]?._id}`, "_blank");
