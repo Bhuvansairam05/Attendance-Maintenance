@@ -22,7 +22,7 @@
     window.addEventListener("DOMContentLoaded", async function (e) {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:5000/api/auth/siteLead/${siteLeadId}`);
+            const response = await fetch(`https://attendance-maintenance.onrender.com/api/auth/siteLead/${siteLeadId}`);
             console.log("response", response);
 
             if (!response.ok) {
@@ -93,9 +93,9 @@
                 console.log(Employees);
                 let index = 1;
                 for (let i = 0; i < Employees.length; i++) {
-                    let employeeDetails = await fetch(`http://localhost:5000/api/auth/employee/${Employees[i]}`);
+                    let employeeDetails = await fetch(`https://attendance-maintenance.onrender.com/api/auth/employee/${Employees[i]}`);
                     let details = await employeeDetails.json();
-                    let attendanceDetails = await fetch(`http://localhost:5000/api/attendance/getAttendance/${Employees[i]}`);
+                    let attendanceDetails = await fetch(`https://attendance-maintenance.onrender.com/api/attendance/getAttendance/${Employees[i]}`);
                     let actualCheckIn = "";
                     let actualCheckOut;
                     if (attendanceDetails.status === 400) {
@@ -152,7 +152,7 @@
                     })
                     // async function approve() {
                     //     try {
-                    //         let response = await fetch(`http://localhost:5000/api/attendance/reject/${details._id}`);
+                    //         let response = await fetch(`https://attendance-maintenance.onrender.com/api/attendance/reject/${details._id}`);
                     //         let result = await response.json();
                     //         warningBox.classList.remove("hidden");
                     //         if (response.ok) {
@@ -173,7 +173,7 @@
                         button.addEventListener("click", async function () {
                             const employeeId = this.getAttribute("data-id");
                             try {
-                                let response = await fetch(`http://localhost:5000/api/attendance/approve/${employeeId}`, {
+                                let response = await fetch(`https://attendance-maintenance.onrender.com/api/attendance/approve/${employeeId}`, {
                                     method: "POST"
                                 });
                                 let result = await response.json();
@@ -194,7 +194,7 @@
                         button.addEventListener("click", async function () {
                             const employeeId = this.getAttribute("data-id");
                             try {
-                                let response = await fetch(`http://localhost:5000/api/attendance/reject/${employeeId}`, {
+                                let response = await fetch(`https://attendance-maintenance.onrender.com/api/attendance/reject/${employeeId}`, {
                                     method: "POST"
                                 });
                                 let result = await response.json();

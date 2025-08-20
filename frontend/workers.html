@@ -21,8 +21,8 @@
     let load = document.getElementById("load-data");
     window.addEventListener("DOMContentLoaded",async function(){
         try{
-            const response =await fetch("http://localhost:5000/api/admins/employees");
-            const adminResponse = await fetch(`http://localhost:5000/api/auth/admin/${adminId}`);
+            const response =await fetch("https://attendance-maintenance.onrender.com/api/admins/employees");
+            const adminResponse = await fetch(`https://attendance-maintenance.onrender.com/api/auth/admin/${adminId}`);
             console.log(response);
             if(response.ok && adminResponse.ok){
                 let result = await response.json();

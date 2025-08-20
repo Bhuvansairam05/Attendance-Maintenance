@@ -20,8 +20,8 @@
     let load = document.getElementById("on-load");
     window.addEventListener("DOMContentLoaded", async function () {
         try {
-            const res = await fetch("http://localhost:5000/api/admins/site-leads");
-            const adminResponse = await fetch(`http://localhost:5000/api/auth/admin/${adminId}`);
+            const res = await fetch("https://attendance-maintenance.onrender.com/api/admins/site-leads");
+            const adminResponse = await fetch(`https://attendance-maintenance.onrender.com/api/auth/admin/${adminId}`);
             if (res.ok && adminResponse.ok) {
                 let result = await res.json();
                 let adminResult = await adminResponse.json();

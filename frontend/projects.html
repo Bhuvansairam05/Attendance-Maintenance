@@ -19,8 +19,8 @@
     let projectBody = document.getElementById("projects-body");
     window.addEventListener("DOMContentLoaded", async function () {
         try {
-            const projectsResponse = await fetch("http://localhost:5000/api/admins/projects");
-            const adminResponse = await fetch(`http://localhost:5000/api/auth/admin/${adminId}`);
+            const projectsResponse = await fetch("https://attendance-maintenance.onrender.com/api/admins/projects");
+            const adminResponse = await fetch(`https://attendance-maintenance.onrender.com/api/auth/admin/${adminId}`);
             let adminResult = await adminResponse.json();
             if (adminResponse.ok) {
 
@@ -127,8 +127,8 @@
                     try {
                         const sitesList = document.getElementById("sitesList");
                         sitesList.innerHTML = "";
-                        const siteleadsResponse = await fetch("http://localhost:5000/api/admins/unassigned-siteLeads");
-                        const employeesResponse = await fetch("http://localhost:5000/api/admins/unassigned-employees");
+                        const siteleadsResponse = await fetch("https://attendance-maintenance.onrender.com/api/admins/unassigned-siteLeads");
+                        const employeesResponse = await fetch("https://attendance-maintenance.onrender.com/api/admins/unassigned-employees");
 
                         if (!siteleadsResponse.ok || !employeesResponse.ok) {
                             alert("Add SiteLeads and employees before adding project");
@@ -171,7 +171,7 @@
                                 workerIDs
                             }
                             try {
-                                const createSite = await fetch("http://localhost:5000/api/admins/create-site/", {
+                                const createSite = await fetch("https://attendance-maintenance.onrender.com/api/admins/create-site/", {
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "application/json"
@@ -220,7 +220,7 @@
                             startDate: startdate,
                             sites
                         }
-                        const res = await fetch("http://localhost:5000/api/admins/create-project/", {
+                        const res = await fetch("https://attendance-maintenance.onrender.com/api/admins/create-project/", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
@@ -247,7 +247,7 @@
                     if (e.target.classList.contains("delete-site")) {
                         const siteId = e.target.getAttribute("data-id");
                         try {
-                            const deleteRes = await fetch("http://localhost:5000/api/admins/delete-site/", {
+                            const deleteRes = await fetch("https://attendance-maintenance.onrender.com/api/admins/delete-site/", {
                                 method: "DELETE",
                                 headers: {
                                     "Content-Type": "application/json"

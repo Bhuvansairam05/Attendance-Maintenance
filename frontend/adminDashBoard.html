@@ -21,7 +21,7 @@
         let adminBody = document.getElementById("admin-body");
         window.addEventListener("DOMContentLoaded",async function(){
             try{ 
-                let response = await fetch(`http://localhost:5000/api/auth/admin/${adminId}`);
+                let response = await fetch(`https://attendance-maintenance.onrender.com/api/auth/admin/${adminId}`);
                 if(response.ok){
                     let results = await response.json();
                 adminBody.innerHTML=`
@@ -191,7 +191,7 @@
                 if (role === "employee") {
                     userData.monthlyPay = monthlyPay;
                     try {
-                        const res = await fetch("http://localhost:5000/api/admins/create-employee", {
+                        const res = await fetch("https://attendance-maintenance.onrender.com/api/admins/create-employee", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
@@ -213,11 +213,9 @@
                         alert("Something went wrong while adding the user.");
                     }
                 }
-
-                // Send to backend
                 else{ 
                 try {
-                        const res = await fetch("http://localhost:5000/api/admins/create-site-lead", {
+                        const res = await fetch("https://attendance-maintenance.onrender.com/api/admins/create-site-lead", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
