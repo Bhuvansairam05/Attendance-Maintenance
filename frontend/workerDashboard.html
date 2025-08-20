@@ -8,6 +8,11 @@
     <title>WorkerDashboard</title>
     <link rel="icon" type="img/png" href="images/fevicon.png">
     <link rel="stylesheet" href="index.css">
+    <style>
+        html{
+            height: 100%;
+        }
+    </style>
 </head>
 
 <body id="employeeDashboard" class="worker-body">
@@ -27,10 +32,15 @@
         try {
             const response = await fetch(`https://attendance-maintenance.onrender.com/api/auth/employee/${employeeId}`);
             const data = await response.json();
-            console.log(data);
             let mainBody = document.getElementById("employeeDashboard");
-
-
+            if(response.status===500){
+                mainBody.innerHTML = '<h1 id="employee-load" align="center">500 Cannot Load Data!</h1>' ;
+                return;
+            }
+            if(data.error){
+                mainBody.innerHTML = ' <h1 id="employee-load" align="center">404 Worker not found!</h1>';
+                return;
+            }
             if (!data.inProject) {
                 mainBody.innerHTML = `<h2>Hello, ${data.name} Currently You are not assigned to any project.</h2>`;
                 return;
