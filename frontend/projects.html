@@ -185,8 +185,9 @@
                                 alert("Created Site Successfully");
                                 const result = await createSite.json();
                                 sitesList.innerHTML += `
-                                <div class="addedSite" data-id="${result._id}"><h5>${result.siteName} <h5><button class="delete-site" data-id=${result._id}>X</button></div>
-                            `;
+                                <div class="addedSite" data-id="${result._id}"><h5>${result.siteName} <h5><button class="delete-site" data-id=${result._id}>X</button></div>`;
+                                siteData = {};
+                                siteName.value = "";
                                 siteForm.classList.add("hidden");
                             }
                             catch {
