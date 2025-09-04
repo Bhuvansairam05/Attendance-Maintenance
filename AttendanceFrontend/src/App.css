@@ -1,4 +1,211 @@
-*{
+/* *{
     background-color: black;
     color: white;
+} */
+ * {
+    padding: 0px;
+    margin: 0px;
+}
+.more{
+    color: rgb(0, 183, 255);
+    display: flex;
+    align-items: center;
+    gap:10px;
+    font-size:30px;
+}
+.logout {
+    padding: 5px;
+    font-size: 21px;
+    font-weight: bold;
+    color: white;
+    background-color: red;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    cursor:pointer;
+}
+body {
+    width: 100%;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 100px;
+    margin-bottom: 0px;
+}
+
+header {
+    height: auto;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    top: 0px;
+    z-index: 1000;
+    background-color: white;
+    border-bottom: 2px solid black;
+}
+
+.headerLine {
+    width: 100%;
+    height: 1px;
+    background-color: black;
+}
+
+.rightHeader {
+    width: 20%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.worker-right-header {
+    width: 20%;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+input {
+    height: 22px;
+
+    font-size: 15px;
+}
+
+.home {
+    height: 25px;
+    width: 45px;
+    border: 1px solid transparent;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 19px;
+    padding:5px;
+}
+
+.home:hover {
+    color: white;
+    background-color: rgb(0, 183, 255);
+    border: 1px solid rgb(0, 183, 255);
+    border-radius: 3px;
+}
+
+.about {
+    height: 25px;
+    width: 45px;
+    border: 1px solid transparent;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 19px;
+    padding:5px;
+}
+
+.about:hover {
+    color: white;
+    background-color: rgb(0, 183, 255);
+    border: 1px solid rgb(0, 183, 255);
+    border-radius: 3px;
+}
+
+.noStyle {
+    text-decoration: none;
+}
+
+.back {
+    margin: 15px;
+    color: black;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.title {
+    padding-left: 20px;
+    height: 25px;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    color: rgb(0, 183, 255);
+}
+
+.logo {
+    height: 20px;
+    width: 20px;
+    border: 2px solid rgb(0, 183, 255);
+    border-radius: 37%;
+    transform: rotate(45deg);
+}
+
+.login {
+    height: 35px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(0, 183, 255);
+    color: white;
+    border: 1px solid rgb(0, 183, 255);
+    border-radius: 20px;
+    font-size: 19px;
+}
+
+main {
+    flex: 1;
+    height: auto;
+    padding: 20px;
+}
+
+.main_content {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+.leftText {
+    margin: 10px;
+    padding: 10px;
+    height: relative;
+    width: 60%;
+    font-size: 25px;
+    line-height: 35px;
+    text-align: justify;
+    border-radius: 15px;
+
+}
+
+.rightImage {
+    margin: 10px;
+    height: 250px;
+    width: 40%;
+    background-image: url("images/Attendance.jpeg");
+    background-size: cover;
+    border-radius: 15px;
+
+}
+
+.rightText {
+    margin: 10px;
+    padding: 30px;
+    height: relative;
+    width: 60%;
+    font-size: 25px;
+    line-height: 35px;
+    text-align: justify;
+    border-radius: 15px;
+
+}
+
+.leftImage {
+    margin: 10px;
+    height: 250px;
+    width: 40%;
+    background-image: url("images/homeMainContent.png");
+    background-size: cover;
+    border-radius: 15px;
 }
