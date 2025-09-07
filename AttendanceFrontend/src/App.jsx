@@ -4,7 +4,6 @@ function App() {
 
   return (
     <>
-      <body>
         <header>
             <div class="title">
             <div class="logo"></div>
@@ -53,7 +52,6 @@ function App() {
         <footer>
           <p>&copy; 2025 Attendance Maintenance System</p>
         </footer>
-      </body>
     </>
   )
 }
